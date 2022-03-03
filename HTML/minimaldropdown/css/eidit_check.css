@@ -1,0 +1,92 @@
+.label_title {
+    width: 300px;
+    height: 50px;
+    border-radius: 64px;
+    background: #ccc;
+    border: 2px solid #000;
+    box-sizing: border-box;
+    align-items: center;
+    place-items: center;
+    font-style: normal;
+    font-size: 25px;
+    font-weight: normal;
+    color: #000;
+    margin-left: 5%;
+}
+
+Button {
+    font-size: 15px;
+    font-weight: normal;
+    color: #ffffff;
+    background: #00766a;
+    border-radius: 10px;
+    border: 1px solid #000;
+    height: 25px;
+    width: fit-content;
+    box-sizing: border-box;
+    padding: 0px 10px;
+}
+
+.styleButton {
+    font-size: 15px;
+    font-weight: normal;
+    color: #ffffff;
+    background: #00766a;
+    border-radius: 10px;
+    border: 1px solid #000;
+    height: 25px;
+    width: fit-content;
+    box-sizing: border-box;
+    cursor: pointer;
+    padding: 0px 10px;
+}
+
+table {
+    align-items: center;
+    position: relative;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2%;
+}
+
+table,
+th,
+td {
+    border: 1px solid;
+}
+
+th {
+    background-color: #00766a;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: normal;
+    height: 50px;
+}
+
+p {
+    font-size: 15px;
+    display: inline-block;
+}
+
+.note {
+    margin-left: 15%;
+    align-items: left;
+    text-align: left;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.green {
+    color: #00766a;
+    display: inline;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.red {
+    color: #a94442;
+    display: inline-block;
+    font-size: 15px;
+    font-weight: bold;
+}
