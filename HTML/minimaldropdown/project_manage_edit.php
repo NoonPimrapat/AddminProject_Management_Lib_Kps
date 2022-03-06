@@ -236,7 +236,7 @@ WHERE project_info.project_id=$project_id";
                     </div>
                     <div class="col-65">
                     <textarea name="operation" rows="4" cols="50" class="inputFill-Information-large" required>
-                        <?php if(!empty($row['objective'])) echo $row['objective'] ?>
+                        <?php if(!empty($row['operation'])) echo $row['operation'] ?>
                     </textarea>
                     </div>
                 </div>
@@ -273,30 +273,27 @@ WHERE project_info.project_id=$project_id";
                 <div class="row">
                     <div class="col-65">
                         <label for="indicator_1" class="topic">1. </label>
-                        <input type="text" id="project_name" name="indicator_1" class="inputFill-Information"
-                               required>
+                        <input type="text" id="project_name" name="indicator_1" class="inputFill-Information" value="<?php if(!empty($row['indicator_1'])) echo $row['indicator_1'] ?>" required>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-65">
-                        <label for="indicator_value_1" class="topic">ค่าเป้าหมาย : </label>
+                        <label for="indicator_1_value" class="topic">ค่าเป้าหมาย : </label>
                         <input type="text" id="project_name" name="indicator_1_value"
-                               class="inputFill-Information-Datepicker" required>
+                               class="inputFill-Information-Datepicker" value="<?php if(!empty($row['indicator_1_value'])) echo $row['indicator_1_value'] ?>" required>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-65">
                         <label for="indicator_2" class="topic">2. </label>
-                        <input type="text" id="project_name" name="indicator_2" class="inputFill-Information"
-                               required>
+                        <input type="text" id="project_name" name="indicator_2" class="inputFill-Information" value="<?php if(!empty($row['indicator_2'])) echo $row['indicator_2'] ?>" required>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-65">
-                        <label for="indicator_value_2" class="topic">ค่าเป้าหมาย : </label>
-                        <input type="text" id="project_name" name="indicator_2_value" value=""
-                               class="inputFill-Information-Datepicker" required>
+                        <label for="indicator_2_value" class="topic">ค่าเป้าหมาย : </label>
+                        <input type="text" id="project_name" name="indicator_2_value" class="inputFill-Information-Datepicker" value="<?php if(!empty($row['indicator_2_value'])) echo $row['indicator_2_value'] ?>" required>
                     </div>
                 </div>
 

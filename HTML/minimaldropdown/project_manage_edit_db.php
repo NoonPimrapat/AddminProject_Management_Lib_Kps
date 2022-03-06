@@ -17,9 +17,7 @@ if (isset($_POST['Update_Project'])) {
     $user_id = $_SESSION['user_id'];
     $errors = [];
     if ($query->num_rows > 0) { // if project_name exists
-        if ($result['project_name'] === $pro_name) {
-            $errors[] = "project_name already exists";
-        }
+        $errors[] = "project_name already exists";
     }
     $buff_update = $_POST;
     unset($buff_update['project_id']);
@@ -36,14 +34,18 @@ if (isset($_POST['Update_Project'])) {
             $errors[] = $key. ' is required';
             $_SESSION['error'] = "pro_name is required";
         }
-        if($key === array_key_last($buff_update)) {
-            // check last item
-            $update .= "{$key} = '{$buff_update[$key]}'";
-        }else{
-            $update .= "{$key} = '{$buff_update[$key]}', ";
-        }
+
+        $update .= "{$key} = '{$buff_update[$key]}',";
+
+//        if($key === array_key_last($buff_update)) {
+//            // check last item
+//            $update .= "{$key} = '{$buff_update[$key]}'";
+//        }else{
+//            $update .= "{$key} = '{$buff_update[$key]}', ";
+//        }
 
     }
+    $update = substr($update,0, -1);
     $keys_update = array_keys($buff_update);
 
     if(count($errors) > 0) {
