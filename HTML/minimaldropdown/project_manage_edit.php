@@ -50,6 +50,7 @@ WHERE project_info.project_id=$project_id";
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="css/project_edit.css" rel="stylesheet">
 
 
 </head>
@@ -147,7 +148,7 @@ WHERE project_info.project_id=$project_id";
                         <label class="topic" for="project_fiscal_year"> ตามแผนปฏิบัติการประจำปีงบประมาณ พ.ศ.:</label>
                     </div>
                     <div class="col-65">
-                        <select  name="project_fiscal_year"  class="inputFill-Information" required>
+                        <select  name="project_fiscal_year"  class="inputFill-Information mt-30" required>
                             <?php for($i=$row['project_fiscal_year'];$row['project_fiscal_year'] - $i <= 4;$i--): ?>
                                     <option value="<?php echo $i ?>"><?php echo $i?></option>
                             <?php   endfor ?>
@@ -158,15 +159,17 @@ WHERE project_info.project_id=$project_id";
                     <div class="col-25">
                         <label class="topic" for="project_style"> ลักษณะโครงการ:</label>
                     </div>
-                    <div class="col-65">
+                    <div class="col-65 mt-10">
                         <?php if(($styles->num_rows > 0)): ?>
                             <?php foreach ($styles as $style): ?>
                                 <?php if($row['project_style'] === $style['project_style_id']): ?>
-                                    <input name="project_style" id="radio_<?php echo $style['project_style_id'] ?>" type="radio" value="<?php echo $style['project_style_id'] ?>" checked>
+                                    <input name="project_style" class="radio-project-edit" id="radio_<?php echo $style['project_style_id'] ?>" type="radio" value="<?php echo $style['project_style_id'] ?>" checked>
                                 <?php else: ?>
-                                    <input name="project_style" id="radio_<?php echo $style['project_style_id'] ?>" type="radio" value="<?php echo $style['project_style_id'] ?>" required>
+                                    <input name="project_style" class="radio-project-edit" id="radio_<?php echo $style['project_style_id'] ?>" type="radio" value="<?php echo $style['project_style_id'] ?>" required>
                                 <?php endif; ?>
-                                <label class="form-check-label" for="radio_<?php echo $style['project_style_id'] ?>""><?php echo $style['project_style_name'] ?></label>
+                                <label class="form-check-label" for="radio_<?php echo $style['project_style_id'] ?>">
+                                    <?php echo $style['project_style_name'] ?>
+                                </label>
 
                             <?php endforeach;?>
                         <?php endif;?>
@@ -177,7 +180,7 @@ WHERE project_info.project_id=$project_id";
                     <div class="col-25">
                         <label class="topic" for="project_strategy"> ภายใต้แผนยุทธศาสตร์:</label>
                     </div>
-                    <div class="col-65">
+                    <div class="col-65 mt-10">
                         <input type="text" class="inputFill-Information" name="project_strategy" required value="<?php  if(!empty($row['project_strategy'])) echo $row['project_strategy'];?>">
                     </div>
                 </div>
@@ -192,7 +195,7 @@ WHERE project_info.project_id=$project_id";
                 </div>
 
 
-                <div class="row">
+                <div class="row mb-20">
                     <div class="col-25">
                         <label class="topic" for="department_id"> ฝ่ายงาน:</label>
                     </div>
@@ -223,7 +226,7 @@ WHERE project_info.project_id=$project_id";
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row mb-10">
                     <div class="col-25">
                         <label class="topic" for="objective"> วัตถุประสงค์:</label>
                     </div>
@@ -246,7 +249,7 @@ WHERE project_info.project_id=$project_id";
                     <div class="col-25">
                         <label for="period_op" class="topic">ระยะเวลาดำเนินการ : </label>
                     </div>
-                    <div class="col-65">
+                    <div class="col-65 mt-30">
                         <input type="date" id="dateStart" name="period_op" class="inputFill-Information-Datepicker"
                                required value="<?php echo $row['period_op'] ?>">
                         <label-inline class="topic">ถึง</label-inline>
@@ -303,7 +306,7 @@ WHERE project_info.project_id=$project_id";
                     <div class="col-25">
                         <label for="responsible_man" class="topic">ผู้รับผิดชอบโครงการ : </label>
                     </div>
-                    <div class="col-65">
+                    <div class="col-65 mt-20">
                         <input type="text" name="responsible_man"
                                value="<?php if(!empty($row['user_firstname'])) echo $row['user_firstname'] .' '. $row['user_lastname'] ?>"
                                class="inputFill-Information" readonly>
