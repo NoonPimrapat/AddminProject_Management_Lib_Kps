@@ -12,13 +12,8 @@ include('../config/db.php');
 if (isset($_POST['Update_Project'])) {
     $project_id = $_POST['project_id'];
     $pro_name = $_POST['project_name'];
-    $user_check_query = "SELECT * FROM project_info WHERE project_name = '$pro_name' AND project_id <> '$project_id' LIMIT 1";
-    $query = mysqli_query($conn, $user_check_query);
     $user_id = $_SESSION['user_id'];
     $errors = [];
-    if ($query->num_rows > 0) { // if project_name exists
-        $errors[] = "project_name already exists";
-    }
     $buff_update = $_POST;
     unset($buff_update['project_id']);
     unset($buff_update['Update_Project']);
@@ -75,6 +70,7 @@ if (isset($_POST['Update_Project'])) {
             echo("<script>window.open('project_manage_edit_report.php?id={$project_id}','_self');</script>");
 
         }
+        echo("<script>window.open('project_manage_edit.php?id={$project_id}','_self');</script>");
     }
 }
 

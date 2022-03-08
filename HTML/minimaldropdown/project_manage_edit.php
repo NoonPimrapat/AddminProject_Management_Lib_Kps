@@ -8,24 +8,27 @@
 
     session_start();
     include('../config/db.php');
-    $project_id = $_GET['id'];
-    $query = "SELECT * FROM project_info 
+
+    if(!empty($_GET['id'])) {
+        $project_id = $_GET['id'];
+        $query = "SELECT * FROM project_info 
 JOIN user_details
     ON user_details.user_id=project_info.user_id
 WHERE project_info.project_id=$project_id";
-    $result = mysqli_query($conn, $query) or die("Error in sql : $query". mysqli_error($conn));
-    $row = mysqli_fetch_array($result);
+        $result = mysqli_query($conn, $query) or die("Error in sql : $query". mysqli_error($conn));
+        $row = mysqli_fetch_array($result);
 
+        $queryde = "SELECT * FROM department_info" or die("Error:" . mysqli_error());
+        $departments = mysqli_query($conn, $queryde);
 
-     $queryde = "SELECT * FROM department_info" or die("Error:" . mysqli_error());
-     $departments = mysqli_query($conn, $queryde);
+        $queryStyle = "SELECT * FROM project_style_info ORDER BY project_style_id asc" or die("Error:" . mysqli_error());
+        // เก็บข้อมูลที่ query ออกมาไว้ในตัวแปร result .
+        $styles = mysqli_query($conn, $queryStyle);
 
-     $queryStyle = "SELECT * FROM project_style_info ORDER BY project_style_id asc" or die("Error:" . mysqli_error());
-    // เก็บข้อมูลที่ query ออกมาไว้ในตัวแปร result .
-     $styles = mysqli_query($conn, $queryStyle);
+        $queryPlan = "SELECT * FROM project_plant WHERE project_id=$project_id";
+        $plans = mysqli_query($conn, $queryPlan);
+    }
 
-     $queryPlan = "SELECT * FROM project_plant WHERE project_id=$project_id";
-     $plans = mysqli_query($conn, $queryPlan);
 
 
 ?>
@@ -133,6 +136,9 @@ WHERE project_info.project_id=$project_id";
 
 
         <div class="grid-container">
+            <?php if(empty($project_id) || empty($row)) :?>
+                <div><h2>ไม่พบข้อมูล Project</h2></div>
+            <?php exit(); endif; ?>
             <div class="grid-item">
                 <input type="hidden" name="project_id" value="<?php echo $_GET['id'];?>">
                 <div class="row">
