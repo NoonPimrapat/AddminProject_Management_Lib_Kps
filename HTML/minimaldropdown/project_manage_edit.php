@@ -162,10 +162,12 @@ WHERE project_info.project_id=$project_id";
                         <?php if(($styles->num_rows > 0)): ?>
                             <?php foreach ($styles as $style): ?>
                                 <?php if($row['project_style'] === $style['project_style_id']): ?>
-                                    <input name="project_style" type="radio" value="<?php echo $style['project_style_id'] ?>" checked><?php echo $style['project_style_name'] ?>
+                                    <input name="project_style" id="radio_<?php echo $style['project_style_id'] ?>" type="radio" value="<?php echo $style['project_style_id'] ?>" checked>
                                 <?php else: ?>
-                                    <input name="project_style" type="radio" value="<?php echo $style['project_style_id'] ?>" required><?php echo $style['project_style_name'] ?>
+                                    <input name="project_style" id="radio_<?php echo $style['project_style_id'] ?>" type="radio" value="<?php echo $style['project_style_id'] ?>" required>
                                 <?php endif; ?>
+                                <label class="form-check-label" for="radio_<?php echo $style['project_style_id'] ?>""><?php echo $style['project_style_name'] ?></label>
+
                             <?php endforeach;?>
                         <?php endif;?>
                     </div>
