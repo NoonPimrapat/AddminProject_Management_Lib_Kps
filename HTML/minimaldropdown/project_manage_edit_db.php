@@ -71,8 +71,8 @@ if (isset($_POST['Update_Project'])) {
                 }
             }
             // send line noti
+            echo("<script>window.open('project_manage_edit_report.php?id={$project_id}','_self');</script>");
             line_noti("\nมีการแก้ไขอนุมัติโครงการ\nโครงการ: {$_POST['project_name']}\nเริ่ม: {$_POST['period_op']}\nสิ้นสุด: {$_POST['period_ed']}");
-            echo("<script>window.open('project_manage_edit_report.php?id={$project_id}'.,'_self');</script>");
 
         }
     }
