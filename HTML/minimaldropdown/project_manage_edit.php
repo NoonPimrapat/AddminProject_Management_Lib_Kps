@@ -8,24 +8,38 @@
 
     session_start();
     include('../config/db.php');
+<<<<<<< HEAD
     $project_id = $_GET['id'];
     $user_id = $_SESSION['user_id'];
     $query = "SELECT * FROM project_info 
+=======
+
+    if(!empty($_GET['id'])) {
+        $project_id = $_GET['id'];
+        $query = "SELECT * FROM project_info 
+>>>>>>> 2c061f10bc8384f6842c3919544baa834b33c355
 JOIN user_details
     ON user_details.user_id=project_info.user_id
 WHERE project_info.project_id=$project_id";
-    $result = mysqli_query($conn, $query) or die("Error in sql : $query". mysqli_error($conn));
-    $row = mysqli_fetch_array($result);
+        $result = mysqli_query($conn, $query) or die("Error in sql : $query". mysqli_error($conn));
+        $row = mysqli_fetch_array($result);
 
+<<<<<<< HEAD
      $queryde = "SELECT * FROM department_info" or die("Error:" . mysqli_error());
      $departments = mysqli_query($conn, $queryde);
+=======
+        $queryde = "SELECT * FROM department_info" or die("Error:" . mysqli_error());
+        $departments = mysqli_query($conn, $queryde);
 
-     $queryStyle = "SELECT * FROM project_style_info ORDER BY project_style_id asc" or die("Error:" . mysqli_error());
-    // เก็บข้อมูลที่ query ออกมาไว้ในตัวแปร result .
-     $styles = mysqli_query($conn, $queryStyle);
+        $queryStyle = "SELECT * FROM project_style_info ORDER BY project_style_id asc" or die("Error:" . mysqli_error());
+        // เก็บข้อมูลที่ query ออกมาไว้ในตัวแปร result .
+        $styles = mysqli_query($conn, $queryStyle);
+>>>>>>> 2c061f10bc8384f6842c3919544baa834b33c355
 
-     $queryPlan = "SELECT * FROM project_plant WHERE project_id=$project_id";
-     $plans = mysqli_query($conn, $queryPlan);
+        $queryPlan = "SELECT * FROM project_plant WHERE project_id=$project_id";
+        $plans = mysqli_query($conn, $queryPlan);
+    }
+
 
      //3. query ข้อมูลจากตาราง user_details:
 $queryProject = "SELECT * FROM project_info WHERE user_id = '$user_id'" or die("Error:" . mysqli_error());
@@ -153,9 +167,22 @@ $result_Project = mysqli_query($conn, $queryProject);
                     echo $_SESSION['error'];
                     unset($_SESSION['error']);
                     ?>
+<<<<<<< HEAD
                     </h3>
                 </div>
                 <?php endif ?>
+=======
+                </h3>
+            </div>
+        <?php endif ?>
+
+
+        <div class="grid-container">
+            <?php if(empty($project_id) || empty($row)) :?>
+                <div><h2>ไม่พบข้อมูล Project</h2></div>
+            <?php exit(); endif; ?>
+            <div class="grid-item">
+>>>>>>> 2c061f10bc8384f6842c3919544baa834b33c355
                 <input type="hidden" name="project_id" value="<?php echo $_GET['id'];?>">
                 <div class="row">
                     <div class="col-25">
