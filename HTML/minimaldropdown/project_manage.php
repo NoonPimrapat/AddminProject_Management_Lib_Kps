@@ -1,11 +1,25 @@
 <?php
     session_start(); 
+    $user_id = $_SESSION['user_id'];
     include('../config/db.php'); 
         $query = "SELECT * FROM `user_details`"; 
         $result = mysqli_query($conn,$query);
+        //1. query ข้อมูลจากตาราง department_info:
+$query = "SELECT * FROM department_info ORDER BY department_id asc" or die("Error:" . mysqli_error());
+// เก็บข้อมูลที่ query ออกมาไว้ในตัวแปร result .
+$result = mysqli_query($conn, $query);
+
+//2. query ข้อมูลจากตาราง project_style_info:
+$query2 = "SELECT * FROM project_style_info ORDER BY project_style_id asc" or die("Error:" . mysqli_error());
+// เก็บข้อมูลที่ query ออกมาไว้ในตัวแปร result .
+$result_style = mysqli_query($conn, $query2);
+
+//3. query ข้อมูลจากตาราง user_details:
+$queryProject = "SELECT * FROM project_info " or die("Error:" . mysqli_error());
+//เก็บข้อมูลที่ query ออกมาไว้ในตัวแปร result .
+$result_Project = mysqli_query($conn, $queryProject);
        
 ?>
-
 <!DOCTYPE html>
 <html>
 
@@ -15,14 +29,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width-device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" -->
+    <!-- integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <meta http-equiv="X-UA-Compatible" content="ie-edge">
     <title> Minimal Dropdown Menu</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/eidit_check.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -46,7 +61,6 @@
     <header>
         <!-- partial:index.partial.html -->
         <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
-
         <div class="wrapper">
             <div class="navbar">
                 <div class="navbar_left">
@@ -55,7 +69,6 @@
                         <img src="../img/kueng.jpg" alt="logo ku" class="mini-logo-ku">
                     </div>
                 </div>
-
                 <div class="navbar_right">
                     <div class="profile">
                         <div class="icon_wrap">
@@ -103,58 +116,50 @@
     </header>
     <p>&nbsp&nbsp<span class="material-icons">assignment</span>จัดการโครงการ/<span
             class="material-icons">upload_file</span>แสดงหรือดาวน์โหลดเอกสารโครงการ</p>
-
     <form method="get" id="form" enctype="multipart/form-data" action="">
         <strong>ค้นหาข้อมูล<span class="material-icons">person_search</span></strong>
         <input type="text" name="search" size="20" value="">
         <input type="submit" value=" ค้นหา ">
     </form></br>
-
-    <table border="5" widht="100%" align="center">
-        <caption></caption>
-        <thead>
-            <tr class="editproject">
-                <th>id</th>
-                <th>ชื่อโครงการ</th>
-                <th>ลักษณะโครงการ</th>
-                <th>ผู้รับผิดชอบ</th>
-                <th>สถานะโครงการ</th>
-                <th>เอกสารโครงการ</th>
-                <th>แก้ไข</th>
-                <th>ลบ</th>
-            </tr>
-        </thead>
-
-
-        <tbody>
-            <?php
-        
+    <div style="text-align: center;">
+        <table>
+            <thead>
+                <tr class="editproject">
+                    <th>ชื่อโครงการ</th>
+                    <th>ลักษณะโครงการ</th>
+                    <th>สถานะโครงการ</th>
+                    <th>เอกสารโครงการ</th>
+                    <th>สถานะเอกสาร</th>
+                </tr>
+                <?php
         $search=isset($_GET['search']) ? $_GET['search']:'';
 
         $sql= "SELECT * FROM `user_details` WHERE user_firstname  LIKE '%$search%'";
         $result = mysqli_query($conn,$sql);
         ?>
-            <?php foreach ($result as $row) { ?>
-            <tr class="editproject">
-                <td> <?php echo $row['user_id']; ?></td>
-                <td> <?php echo $row['user_firstname']; ?></td>
-                <td> <?php echo $row['user_lastname']; ?></td>
-                <td> <?php echo $row['user_typeSex']; ?></td>
-                <td> <?php echo $row['user_position']; ?></td>
-                <td> <?php echo $row['user_status']; ?></td>
-
-                <td>
-                    <a href="member_edit.php?id=<?php echo $row['user_id']; ?>">Edit</a>
-                </td>
-                <td>
-                    <a href="member_delete.php?id=<?php echo $row[
-                        'user_id']; ?>" onclick="return confirm('ยืนยันการลบข้อมูล');">Delete</a>
-                </td>
-            </tr>
+                <?php foreach ($result_Project as $value) { ?>
+            <tbody>
+                <tr>
+                    <td><?php echo $value['project_name']; ?></td>
+                    <td><?php echo $value['project_style']; ?></td>
+                    <td><?php echo $value['status_project']; ?></td>
+                    <td><a href="project_manage_edit.php?id=<?php echo $value['project_id']; ?>">
+                            <?php echo $value['status_project']; ?></a>
+                    </td>
+                    <td> <?php   if ($value['document_status']==0) {echo'<p style="color: #a94442;">รอตรวจสอบ</p>';}else
+                    {echo'<p style="color: #00766a;">ตรวจสอบแล้ว</p>';}?></td>
+                </tr>
+            </tbody>
+            </thead>
             <?php } ?>
-
-        </tbody>
-    </table>
+        </table>
+        <div class="container-button">
+            <button onclick="parent.location='home.php'" class="backButton">Back </button>
+            <?php
+            unset($_SESSION['project_id']);
+            ?>
+        </div>
+    </div>
     <?php mysqli_close($conn); ?>
 </body>
 

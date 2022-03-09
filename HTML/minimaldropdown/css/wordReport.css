@@ -1,0 +1,55 @@
+    .report-container {
+        height: 297mm;
+        width: 210mm;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .report-img {
+        width: 112px;
+        height: 112px;
+        align-items: left;
+    }
+    
+    strong {
+        font-family: 'Sarabun', sans-serif;
+        font-weight: bold;
+        font-size: 48px;
+    }
+    
+    .border-bottom {
+        border-bottom: dashed 2px #000;
+    }
+    
+    .center {
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    p {
+        font-family: 'Sarabun', sans-serif;
+        font-weight: bold;
+        font-size: 16px;
+    }
+    
+    div.indent {
+        text-indent: 50px;
+        /*กำหนดค่าย่อหน้า*/
+    }
+    
+    u {
+        font-family: 'Sarabun', sans-serif;
+        font-weight: normal;
+        font-size: 16px;
+    }
+    
+    div.right {
+        /* ข้อความชิดซ้าย */
+        text-align: right;
+    }
+    
+    div.inline {
+        display: grid;
+        grid-template-columns: auto auto;
+    }

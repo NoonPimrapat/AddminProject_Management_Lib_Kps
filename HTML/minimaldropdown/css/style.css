@@ -13,6 +13,16 @@ body {
     text-align: left;
 }
 
+.grid-edit {
+    display: grid;
+    grid-template-columns: 25% auto;
+    /* position: relative; */
+    /* margin: -8px; */
+    /* justify-content: center; */
+    text-align: left;
+    margin: 3%;
+}
+
 .container {
     /* position: relative; */
     margin: -8px;
@@ -29,6 +39,16 @@ body {
     /* width: 80%; */
     text-align: left;
     margin-top: 2%;
+}
+
+.grid-item-line {
+    background-color: #fff;
+    /* width: 80%; */
+    text-align: left;
+    margin-top: 2%;
+    border: #000;
+    border-style: solid;
+    border-width: 1px;
 }
 
 .grid-item-center {
@@ -142,9 +162,9 @@ button {
     margin-top: 6px;
 }
 
-.col-75 {
+.col-65 {
     float: left;
-    width: 75%;
+    width: 65%;
     margin-top: 6px;
 }
 
@@ -460,7 +480,7 @@ p2 {
     font-weight: bold;
     font-size: 24px;
     color: #000000;
-    margin-left: 20%;
+    margin-left: 5%;
     padding-top: 20px;
 }
 
@@ -657,4 +677,10 @@ tbody {
     margin-left: 10%;
     padding-top: 20px;
     text-align: left;
+}
+
+.col-25 {
+    float: left;
+    width: 25%;
+    margin-top: 6px;
 }

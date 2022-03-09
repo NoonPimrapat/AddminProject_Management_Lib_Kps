@@ -64,225 +64,235 @@ $file = preg_replace('/\\\\/','/',$file);
     <meta charset="UTF-8">
     <meta name="viewport" content="width-device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <meta http-equiv="X-UA-Compatible" content="ie-edge">
     <title> Minimal Dropdown Menu</title>
-<!--    <link rel="stylesheet" href="css/style.css">-->
+    <!--    <link rel="stylesheet" href="css/style.css">-->
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 </head>
 
 
 <style>
+.report-container {
+    height: 297mm;
+    width: 210mm;
+    margin-left: auto;
+    margin-right: auto;
+}
 
-    .report-container {
-        height: 297mm;
-        width: 210mm;
-        margin-left: auto;
-        margin-right: auto;
-    }
+.report-img {
+    width: 120px;
+    height: 112px;
+    align-items: left;
+}
 
-    .report-img {
-        width: 120px;
-        height: 112px;
-        align-items: left;
-    }
+h1 {
+    font-family: 'Sarabun', sans-serif;
+    font-weight: bold;
+    font-size: 48px;
+}
 
-    h1 {
-        font-family: 'Sarabun', sans-serif;
-        font-weight: bold;
-        font-size: 48px;
-    }
-    strong.font-twenty {
-        font-size: 20px;
-    }
-    .border-bottom {
-        border-bottom: dashed 2px #000;
-    }
+strong.font-twenty {
+    font-size: 20px;
+}
 
-    .center {
-        text-align: center;
-        justify-content: center;
-        align-items: center;
-    }
+.border-bottom {
+    border-bottom: dashed 2px #000;
+}
 
-    p {
-        font-family: 'Sarabun', sans-serif;
-        /*font-weight: bold;*/
-        font-size: 16px;
-    }
+.center {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
 
-    div.indent {
-        text-indent: 50px;
-        font: normal;
-        /*กำหนดค่าย่อหน้า*/
-    }
+p {
+    font-family: 'Sarabun', sans-serif;
+    /*font-weight: bold;*/
+    font-size: 16px;
+}
 
-    u {
-        font-family: 'Sarabun', sans-serif;
-        font-weight: normal;
-        font-size: 16px;
-    }
+div.indent {
+    text-indent: 50px;
+    font: normal;
+    /*กำหนดค่าย่อหน้า*/
+}
 
-    div.right {
-        /* ข้อความชิดซ้าย */
-        text-align: right;
-    }
+u {
+    font-family: 'Sarabun', sans-serif;
+    font-weight: normal;
+    font-size: 16px;
+}
 
-    div.inline {
-        display: grid;
-        grid-template-columns: auto auto;
-    }
-    div.inline {
-        display: grid;
-        grid-template-columns: auto auto;
-    }
-    .mb-diff-fifteen {
-        margin-bottom: -15px;
-    }
-    .mb-fifty {
-        margin-bottom: 50px
-    }
+div.right {
+    /* ข้อความชิดซ้าย */
+    text-align: right;
+}
+
+div.inline {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+div.inline {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.mb-diff-fifteen {
+    margin-bottom: -15px;
+}
+
+.mb-fifty {
+    margin-bottom: 50px
+}
 </style>
 
 <!DOCTYPE html>
 <html>
-    <h1 class="center">ตัวอย่างไฟล์ Document</h1>
-    <br/>
-    <br/>
-    <br/>
-    <div class="report-container" id="exportContent">
-        <div class="inline text-center">
-            <img src="../img/kuthai.jpg" alt="logoReport" class="report-img d-inline" />
-<!--            <img src="http://localhost/lib_kps/HTML/img/kuthai.jpg" alt="logoReport" class="report-img d-inline" />-->
-            <h1 style="text-align: left;">บันทึกข้อความ</h1>
-        </div>
-        <br />
-        <div class="inline">
-            <p><strong class="font-twenty">ส่วนงาน</strong>
-                <u class="border-bottom d-inline">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<?php echo $dept?> สำนักหอสมุด กำแพงแสน โทร 0-3435-1884 ภายใน 3802&emsp;&emsp;&emsp;&emsp;</u>
-            </p>
-        </div>
-        <div class="inline">
-            <p class="d-inline"><strong class="font-twenty">ที่</strong><u class="border-bottom">&emsp; อว
-                    ๖๕๐๒.๐๘/&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u><strong class="font-twenty">วันที่</strong><u>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u></p>
-        </div>
-        <div class="inline">
-            <p class="d-inline"><strong class="font-twenty">เรื่อง</strong>
-                <u class="border-bottom ">ขออนุมัติจัด&emsp;<?php echo $project_name?>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                </u>
-            </p>
+<h1 class="center">ตัวอย่างไฟล์ Document</h1>
+<br />
+<br />
+<br />
+<div class="report-container" id="exportContent">
+    <div class="inline text-center">
+        <img src="../img/kuthai.jpg" alt="logoReport" class="report-img d-inline" />
+        <!--            <img src="http://localhost/lib_kps/HTML/img/kuthai.jpg" alt="logoReport" class="report-img d-inline" />-->
+        <h1 style="text-align: left;">บันทึกข้อความ</h1>
+    </div>
+    <br />
+    <div class="inline">
+        <p><strong class="font-twenty">ส่วนงาน</strong>
+            <u class="border-bottom d-inline">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<?php echo $dept?>
+                สำนักหอสมุด กำแพงแสน โทร 0-3435-1884 ภายใน 3802&emsp;&emsp;&emsp;&emsp;</u>
+        </p>
+    </div>
+    <div class="inline">
+        <p class="d-inline"><strong class="font-twenty">ที่</strong><u class="border-bottom">&emsp; อว
+                ๖๕๐๒.๐๘/&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u><strong
+                class="font-twenty">วันที่</strong><u>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u>
+        </p>
+    </div>
+    <div class="inline">
+        <p class="d-inline"><strong class="font-twenty">เรื่อง</strong>
+            <u class="border-bottom ">ขออนุมัติจัด&emsp;<?php echo $project_name?>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            </u>
+        </p>
 
-        </div>
+    </div>
 
-        <div class="">เรียน ผู้อำนวยการสำนักหอสมุด กำแพงแสน</div>
-        <br />
-        <div class="indent">
-            <p>ตามที่สำนักหอสมุด กำแพงแสน ได้กำหนดแผนปฎิบัติการประจำปีงบประมาณ พ.ศ. <?php echo $year?>
-                เพื่อเป็นกรอบและทิศทางการดำเนินงานในปีงบประมาณ พ.ศ. <?php echo $year?>
-                ของแต่ละหน่วยงานภายในสำนักหอสมุดกำแพงแสน
-                อันจะนำไปสู่เป้าหมายและวิสัยทัศน์ที่กำหนดไว้ร่วมกัน
-            </p>
-        </div>
-        <div class="indent">
+    <div class="">เรียน ผู้อำนวยการสำนักหอสมุด กำแพงแสน</div>
+    <br />
+    <div class="indent">
+        <p>ตามที่สำนักหอสมุด กำแพงแสน ได้กำหนดแผนปฎิบัติการประจำปีงบประมาณ พ.ศ. <?php echo $year?>
+            เพื่อเป็นกรอบและทิศทางการดำเนินงานในปีงบประมาณ พ.ศ. <?php echo $year?>
+            ของแต่ละหน่วยงานภายในสำนักหอสมุดกำแพงแสน
+            อันจะนำไปสู่เป้าหมายและวิสัยทัศน์ที่กำหนดไว้ร่วมกัน
+        </p>
+    </div>
+    <div class="indent">
 
+        <p>
+            ดังนั้น เพื่อให้การดำเนินงานเป็นไปตามแผนปฎิบัติการ ประจำปีงบประมาณ พ.ศ.
+            <?php echo $year?>และบรรลุตามเป้าหมายที่กำหนดไว้ จึงใคร่ขออนุมัติจัด
+            <?php echo $project_name?>
+            โดยใช้เงินรายได้สำนักหอสมุดกำแพงแสน ภายในงบประมาณจำนวน <?php echo $total?> .- บาท
+            (<?php echo $total_thai?>)
+            ทั้งนี้ได้แนบรายละเอียดโครงการดังกล่าวมาด้วยแล้ว
+        </p>
+    </div>
+
+    <div class="indent">
+        <p> จึงเรียนมาเพื่อโปรดพิจารณาอนุมัติ</p>
+    </div>
+
+    <div class="">
+        <p>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;(<?php echo $name?>)
+            <br />
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;ผู้รับผิดชอบโครงการ
+        </p>
+    </div>
+    <div>
+        <p>
+            เรียน หัวหน้า <?php echo $dept ?>
+        </p>
+    </div>
+    <div class="indent">
+        <p>
+            เพื่อโปรดพิจารณาเสนอผู้อำนวยการสำนักฯ พิจารณาอนุมัติ
+            ทั้งนี้โครงการดังกล่าวเป็นโครงการประจำภายใต้แผนปฎิบัติการประจำปีงบประมาณ
+            พ.ศ.<?php echo $year ?> และได้ตรวจสอบรายละเอียดในเบื้องต้นแล้วเรียบร้อยแล้ว
+        </p>
+    </div>
+    <div class="">
+        <p>
+            <br />
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;....................................................
+            <br />
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;นักวิเคราะห์นโยบายและแผน
+        </p>
+    </div>
+    <br />
+    <div class="inline mb-diff-fifteen ">
+        <div>
             <p>
-                ดังนั้น เพื่อให้การดำเนินงานเป็นไปตามแผนปฎิบัติการ ประจำปีงบประมาณ พ.ศ.
-                <?php echo $year?>และบรรลุตามเป้าหมายที่กำหนดไว้ จึงใคร่ขออนุมัติจัด
-                <?php echo $project_name?>
-                โดยใช้เงินรายได้สำนักหอสมุดกำแพงแสน ภายในงบประมาณจำนวน <?php echo $total?> .- บาท
-                (<?php echo $total_thai?>)
-                ทั้งนี้ได้แนบรายละเอียดโครงการดังกล่าวมาด้วยแล้ว
-            </p>
-        </div>
-
-        <div class="indent">
-            <p> จึงเรียนมาเพื่อโปรดพิจารณาอนุมัติ</p>
-        </div>
-
-        <div class="">
-            <p>
-                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;(<?php echo $name?>)
-                <br />
-                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;ผู้รับผิดชอบโครงการ
+                <strong>เรียน ผู้อำนวยการสำนักหอสมุด กำแพงแสน</strong>
             </p>
         </div>
         <div>
             <p>
-                เรียน หัวหน้า <?php echo $dept ?>
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<strong class="font-twenty">อนุมัติ</strong>
             </p>
         </div>
-        <div class="indent">
-            <p>
-                เพื่อโปรดพิจารณาเสนอผู้อำนวยการสำนักฯ พิจารณาอนุมัติ
-                ทั้งนี้โครงการดังกล่าวเป็นโครงการประจำภายใต้แผนปฎิบัติการประจำปีงบประมาณ
-                พ.ศ.<?php echo $year ?> และได้ตรวจสอบรายละเอียดในเบื้องต้นแล้วเรียบร้อยแล้ว
-            </p>
-        </div>
+    </div>
+
+
+    <div class="indent">
+        <p>
+            เพื่อโปรดพิจารณาลงนามอนุมัติ
+        </p>
+    </div>
+    <br />
+    <div class="inline mb-fifty">
+
+        &emsp;&emsp;&emsp;&emsp;&emsp;........................................... <br>
+        &emsp;&emsp;&emsp;&emsp;หัวหน้า <?php echo $dept?>
         <div class="">
-            <p>
-                <br />
-                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;....................................................
-                <br />
-                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;นักวิเคราะห์นโยบายและแผน
-            </p>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;(&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;)
+            <br />
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;ผู้อำนวยการสำนักหอสมุดกำแพงแสน
+            <br />
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;........... /
+            ............ / ..........</u>
         </div>
-        <br/>
-        <div class="inline mb-diff-fifteen ">
-            <div>
-                <p>
-                    <strong>เรียน ผู้อำนวยการสำนักหอสมุด กำแพงแสน</strong>
-                </p>
-            </div>
-            <div>
-                <p>
-                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<strong class="font-twenty">อนุมัติ</strong>
-                </p>
-            </div>
-        </div>
-
-
-        <div class="indent">
-            <p>
-                เพื่อโปรดพิจารณาลงนามอนุมัติ
-            </p>
-        </div>
-        <br/>
-        <div class="inline mb-fifty">
-
-            &emsp;&emsp;&emsp;&emsp;&emsp;........................................... <br>
-            &emsp;&emsp;&emsp;&emsp;หัวหน้า <?php echo $dept?>
-            <div class="">
-                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;(&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;)
-                <br/>
-                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;ผู้อำนวยการสำนักหอสมุดกำแพงแสน
-                <br />
-                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;........... / ............ / ..........</u>
-            </div>
-        </div>
-        <br/>
-        <div class="container-button center">
-            <button onclick="parent.location='project_manage_edit.php?id=28'" class="backButton btn btn-warning">กลับ </button>
-            <button onclick="Download();" class="download-doc btn btn-success">ดาวน์โหลด </button>
-            <?php
+    </div>
+    <br />
+    <div class="container-button center">
+        <button onclick="parent.location='project_manage_edit.php?id=28'" class="backButton btn btn-warning">กลับ
+        </button>
+        <button onclick="Download();" class="download-doc btn btn-success">ดาวน์โหลด </button>
+        <?php
             unset($_SESSION['project_id']);
             ?>
 
-        </div>
-        <iframe id="my_iframe" style="display:none;"></iframe>
     </div>
+    <iframe id="my_iframe" style="display:none;"></iframe>
+</div>
+
 </html>
 <script>
-    function Download() {
-        window.open('<?php echo $file?>','_self');
-    };
-
+function Download() {
+    window.open('<?php echo $file?>', '_self');
+};
 </script>
 <?php
 

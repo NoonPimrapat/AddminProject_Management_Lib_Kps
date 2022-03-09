@@ -1,0 +1,65 @@
+table tbody tr {
+    position: relative;
+}
+
+table a {
+    position: absolute;
+    right: -25px;
+    top: 12px;
+    opacity: 0;
+    visibility: hidden;
+}
+
+table input {
+    width: 100%;
+}
+
+.hiden {
+    display: none !important;
+    opacity: 0;
+}
+
+tr.act-input a {
+    opacity: 1;
+    visibility: initial;
+}
+
+tr a[data-action="remove"] {
+    visibility: initial;
+    opacity: 1;
+}
+
+tr.act-input a[data-action="remove"] {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.error {
+    margin-bottom: 16px;
+}
+
+.p-right {
+    width: 450px;
+    float: right;
+}
+
+.p-right:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+tr.checked a {
+    opacity: 1;
+    visibility: initial;
+}
+
+tr a[data-action="remove-plant"] {
+    visibility: initial;
+    opacity: 1;
+}
+
+tr.checked a[data-action="remove-plant"] {
+    visibility: hidden;
+    opacity: 0;
+}
