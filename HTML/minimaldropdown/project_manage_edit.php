@@ -1,11 +1,4 @@
 <?php
-/**
- *  Created by PhpStorm.
- *  User: Rock Melody
- *  on 3/5/2022.
- *  on 19:41 AM.
- */
-
     session_start();
     include('../config/db.php');
     $project_id = $_GET['id'];
@@ -124,24 +117,24 @@ $result_Project = mysqli_query($conn, $queryProject);
 
     <div class="grid-edit">
         <div class="grid-item">
-            <?php foreach ($result_Project as $value) { ?>
+
             <br>
-            <a href="project_manage_edit.php?id=" $project_id class="detailButton">
+            <a href="project_manage_edit.php?id=<?php echo $row['project_id']; ?>" class="detailButton">
                 &nbsp&nbsp&nbspขออนุมัติโครงการ&nbsp&nbsp&nbsp</a>&nbsp&nbsp
             <br><br>
-            <a href="project_manage_edit_performance.php?id=<?php echo $value['project_id']; ?>" class="detailButton">
+            <a href="project_manage_edit_performance.php?id=<?php echo $row['project_id']; ?>" class="detailButton">
                 &nbsp&nbsp&nbspรายงานผลการดำเนินงาน&nbsp&nbsp&nbsp</a>&nbsp&nbsp
             <br>
             <br>
-            <a href="edit_perdepart.php" class="detailButton">
+            <a href="project_manage_edit_adjust_project.php?id=<?php echo $row['project_id']; ?>" class="detailButton">
                 &nbsp&nbsp&nbspขออนุมัติปรับแผนโครงการ&nbsp&nbsp&nbsp</a>&nbsp&nbsp
             <br><br>
-            <a href="edit_perdepart.php" class="detailButton">
+            <a href="project_manage_edit_disbursement.php?id=<?php echo $row['project_id']; ?>" class="detailButton">
                 &nbsp&nbsp&nbspขออนุมัติเบิกจ่ายรายครั้ง&nbsp&nbsp&nbsp</a>&nbsp&nbsp
             <br><br>
-            <a href="edit_perdepart.php" class="detailButton">
+            <a href="project_manage_edit_close_project.php?id=<?php echo $row['project_id']; ?>" class="detailButton">
                 &nbsp&nbsp&nbspขออนุมัติปิดโครงการ&nbsp&nbsp&nbsp</a>&nbsp&nbsp
-            <?php } ?>
+
         </div>
         <div class="grid-item-line">
             <form method="post" id="form" enctype="multipart/form-data" action="project_manage_edit_db.php">

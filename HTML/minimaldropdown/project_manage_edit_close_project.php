@@ -121,20 +121,20 @@ WHERE project_info.project_id=$project_id";
     <div class="grid-edit">
         <div class="grid-item">
             <br>
-            <a href="project_manage_edit.php" class="detailButton">
+            <a href="project_manage_edit.php?id=<?php echo $row['project_id']; ?>" class="detailButton">
                 &nbsp&nbsp&nbspขออนุมัติโครงการ&nbsp&nbsp&nbsp</a>&nbsp&nbsp
             <br><br>
-            <a href="project_manage_edit_performance.php" class="detailButton">
+            <a href="project_manage_edit_performance.php?id=<?php echo $row['project_id']; ?>" class="detailButton">
                 &nbsp&nbsp&nbspรายงานผลการดำเนินงาน&nbsp&nbsp&nbsp</a>&nbsp&nbsp
             <br>
             <br>
-            <a href="project_manage_edit_adjust_project.php" class="detailButton">
+            <a href="project_manage_edit_adjust_project.php?id=<?php echo $row['project_id']; ?>" class="detailButton">
                 &nbsp&nbsp&nbspขออนุมัติปรับแผนโครงการ&nbsp&nbsp&nbsp</a>&nbsp&nbsp
             <br><br>
-            <a href="project_manage_edit_disbursement.php" class="detailButton">
+            <a href="project_manage_edit_disbursement.php?id=<?php echo $row['project_id']; ?>" class="detailButton">
                 &nbsp&nbsp&nbspขออนุมัติเบิกจ่ายรายครั้ง&nbsp&nbsp&nbsp</a>&nbsp&nbsp
             <br><br>
-            <a href="project_manage_edit_close_project.php" class="detailButton">
+            <a href="project_manage_edit_close_project.php?id=<?php echo $row['project_id']; ?>" class="detailButton">
                 &nbsp&nbsp&nbspขออนุมัติปิดโครงการ&nbsp&nbsp&nbsp</a>&nbsp&nbsp
 
         </div>
@@ -418,7 +418,7 @@ WHERE project_info.project_id=$project_id";
                         <div class="col-65">
 
                             <input type="text" name="responsible_man"
-                                value="<?php foreach ($result_Username as $results) { ?><?php echo $results["user_firstname"]; ?> &nbsp; <?php echo $results["user_lastname"] ?> <?php } ?>"
+                                value="<?php echo $row["user_firstname"]; ?> &nbsp; <?php echo $row["user_lastname"] ?> "
                                 class="inputFill-Information" readonly>
 
                         </div>

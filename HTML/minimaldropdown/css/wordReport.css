@@ -38,6 +38,11 @@
         /*กำหนดค่าย่อหน้า*/
     }
     
+    div.indent-100 {
+        text-indent: 80%;
+        /*กำหนดค่าย่อหน้า*/
+    }
+    
     u {
         font-family: 'Sarabun', sans-serif;
         font-weight: normal;

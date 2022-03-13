@@ -1,6 +1,4 @@
 <?php
-
-
     session_start();
     include('../config/db.php');
     $project_id = $_GET['id'];
@@ -40,6 +38,7 @@ WHERE project_info.project_id=$project_id";
     <title> Minimal Dropdown Menu</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/wordReport.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="css/project_edit.css" rel="stylesheet">
@@ -121,20 +120,20 @@ WHERE project_info.project_id=$project_id";
     <div class="grid-edit">
         <div class="grid-item">
             <br>
-            <a href="project_manage_edit.php" class="detailButton">
+            <a href="project_manage_edit.php?id=<?php echo $row['project_id']; ?>" class="detailButton">
                 &nbsp&nbsp&nbspขออนุมัติโครงการ&nbsp&nbsp&nbsp</a>&nbsp&nbsp
             <br><br>
-            <a href="project_manage_edit_performance.php" class="detailButton">
+            <a href="project_manage_edit_performance.php?id=<?php echo $row['project_id']; ?>" class="detailButton">
                 &nbsp&nbsp&nbspรายงานผลการดำเนินงาน&nbsp&nbsp&nbsp</a>&nbsp&nbsp
             <br>
             <br>
-            <a href="project_manage_edit_adjust_project.php" class="detailButton">
+            <a href="project_manage_edit_adjust_project.php?id=<?php echo $row['project_id']; ?>" class="detailButton">
                 &nbsp&nbsp&nbspขออนุมัติปรับแผนโครงการ&nbsp&nbsp&nbsp</a>&nbsp&nbsp
             <br><br>
-            <a href="project_manage_edit_disbursement.php" class="detailButton">
+            <a href="project_manage_edit_disbursement.php?id=<?php echo $row['project_id']; ?>" class="detailButton">
                 &nbsp&nbsp&nbspขออนุมัติเบิกจ่ายรายครั้ง&nbsp&nbsp&nbsp</a>&nbsp&nbsp
             <br><br>
-            <a href="project_manage_edit_close_project.php" class="detailButton">
+            <a href="project_manage_edit_close_project.php?id=<?php echo $row['project_id']; ?>" class="detailButton">
                 &nbsp&nbsp&nbspขออนุมัติปิดโครงการ&nbsp&nbsp&nbsp</a>&nbsp&nbsp
 
         </div>
@@ -152,23 +151,48 @@ WHERE project_info.project_id=$project_id";
                 </div>
                 <?php endif ?>
                 <div class="grid-item">
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="โครงการ" class="topic">โครงการ:</label>
-                        </div>
+                    <label for="โครงการ" class="topic">ขออนุมัตเบิกจ่ายเงินโครงการตามแผนปฏิบัติการประจำปี สำนักหอสมุด
+                        กำแพงแสน</label>
+                    <div class="inline">
+                        <label class="p_word">ส่วนงาน สำนักหอสมุด กำแพงแสน &nbsp&nbsp&nbsp โทร 0-3435-1884 ภายใน
+                            3802</label>
 
-                        <div class="col-65">
-                            <select name="project_id" class="inputFill-Information" required>
-                                <option value=""> กรุณาเลือก </option>
-                                <?php foreach ($result_ProjectName as $results) { ?>
-                                <option value="<?php echo $results["project_id"]; ?>">
-                                    <?php echo $results["project_name"]; ?>
-                                </option>
-                                <?php } ?>
-                            </select>
+
+                    </div>
+                    <div class="inline">
+                        <label class="p_word">ที่ อว ๖๕๐๒.๐๘/........
+
+                        </label>
+                        <div class="right">
+                            <label class="p_word"> วันที่ </label>
                         </div>
 
                     </div>
+                    <div class="inline">
+                        <label class="p_word">เรื่อง ขออนุมัติเบิกจ่ายเงินโครงการตามแผนปฏิบัติการ ประจำปีงบประมาณ พ.ศ.
+                            <?php echo $row["project_fiscal_year"]; ?>
+                        </label>
+                    </div>
+
+                    <div class="inline">
+                        <label class="p_word">เรียน ผู้อำนวยการสำนักหอสมุด กำแพงแสน
+
+                        </label>
+                    </div>
+                    <div class="indent">
+                        <label class="p_word">ข้าพเจ้า
+                            <?php echo $row["user_firstname"]; ?>&nbsp<?php echo $row["user_lastname"]; ?> ฝ่าย
+                            <?php echo $row["user_position"]; ?>
+
+                        </label>
+                    </div>
+                    <div class="inline">
+                        <label class="p_word">ผู้รับผิดชอบโครงการ <?php echo $row["project_name"]; ?>ครั้งที่/
+                            <?php echo $row["project_fiscal_year"]; ?> วันที่ ขออนุมัติเบิกจ่ายเงินในโครงการดังกล่าว
+                            โดยมีรายละเอียดดังนี้
+                        </label>
+                    </div>
+
                     <br><br>
                     <div class="row">
                         <div class="col-25">
@@ -285,11 +309,28 @@ WHERE project_info.project_id=$project_id";
                         </div>
                         <div class="col-65 sum-total">
                             <div for="รวม" class="topic p-right">
-                                รวม : <span class="pull-right" id="sum-total">0.00.- บาท</span>
+                                รวมเป็นเงิน : <span class="pull-right" id="sum-total">0.00.- บาท</span>
                                 <div id="bahttex" class="topic p-right text-right">(.......บาทถ้วน)</div>
                                 <input type="hidden" name="project_sum_total" value="0" id="sum_total">
                             </div>
                         </div>
+                    </div>
+                    <div class="indent">
+                        <label class="p_word">จึงเรียนมาเพื่อโปรดพิจารณาอนุมัติ
+
+
+                        </label>
+                    </div>
+                    <div class="indent-100">
+                        <br>
+
+                        <label class="p_word">ลงชื่อ <br>
+                            ..........................................................<br>
+                            (<?php echo $row["user_firstname"]; ?>&nbsp<?php echo $row["user_lastname"]; ?>)
+
+
+                        </label>
+
                     </div>
                     <div class="container-button">
                         <button type="reset" value="reset" class="backButton" onclick="parent.location='home.php'">Back

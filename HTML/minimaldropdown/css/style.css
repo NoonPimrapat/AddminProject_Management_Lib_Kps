@@ -366,6 +366,12 @@ p {
     line-height: 70px;
 }
 
+.p_word {
+    font-family: 'Prompt', sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+}
+
 form {
     font-size: 1.4em;
     left: 100px;

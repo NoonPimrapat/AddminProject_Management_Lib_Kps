@@ -121,20 +121,20 @@ WHERE project_info.project_id=$project_id";
     <div class="grid-edit">
         <div class="grid-item">
             <br>
-            <a href="project_manage_edit.php" class="detailButton">
+            <a href="project_manage_edit.php?id=<?php echo $row['project_id']; ?>" class="detailButton">
                 &nbsp&nbsp&nbspขออนุมัติโครงการ&nbsp&nbsp&nbsp</a>&nbsp&nbsp
             <br><br>
-            <a href="project_manage_edit_performance.php" class="detailButton">
+            <a href="project_manage_edit_performance.php?id=<?php echo $row['project_id']; ?>" class="detailButton">
                 &nbsp&nbsp&nbspรายงานผลการดำเนินงาน&nbsp&nbsp&nbsp</a>&nbsp&nbsp
             <br>
             <br>
-            <a href="project_manage_edit_adjust_project.php" class="detailButton">
+            <a href="project_manage_edit_adjust_project.php?id=<?php echo $row['project_id']; ?>" class="detailButton">
                 &nbsp&nbsp&nbspขออนุมัติปรับแผนโครงการ&nbsp&nbsp&nbsp</a>&nbsp&nbsp
             <br><br>
-            <a href="project_manage_edit_disbursement.php" class="detailButton">
+            <a href="project_manage_edit_disbursement.php?id=<?php echo $row['project_id']; ?>" class="detailButton">
                 &nbsp&nbsp&nbspขออนุมัติเบิกจ่ายรายครั้ง&nbsp&nbsp&nbsp</a>&nbsp&nbsp
             <br><br>
-            <a href="project_manage_edit_close_project.php" class="detailButton">
+            <a href="project_manage_edit_close_project.php?id=<?php echo $row['project_id']; ?>" class="detailButton">
                 &nbsp&nbsp&nbspขออนุมัติปิดโครงการ&nbsp&nbsp&nbsp</a>&nbsp&nbsp
 
         </div>
@@ -152,20 +152,15 @@ WHERE project_info.project_id=$project_id";
                 </div>
                 <?php endif ?>
                 <div class="grid-item">
+                    <label for="โครงการ" class="topic center">การรายงานความก้าวหน้า</label>
                     <div class="row">
                         <div class="col-25">
                             <label for="โครงการ" class="topic">โครงการ:</label>
                         </div>
 
                         <div class="col-65">
-                            <select name="project_id" class="inputFill-Information" id="project_id" required>
-                                <option value=""> กรุณาเลือก </option>
-                                <?php foreach ($result_ProjectName as $results) { ?>
-                                <option value="<?php echo $results["project_id"]; ?>">
-                                    <?php echo $results["project_name"]; ?>
-                                </option>
-                                <?php } ?>
-                            </select>
+                            <input type="text" class="inputFill-Information" name="project_name" id="pro_name" readonly
+                                value="<?php echo $row['project_name'];?>">
 
                         </div>
 
@@ -175,14 +170,12 @@ WHERE project_info.project_id=$project_id";
                             <label for="โครงการ" class="topic">รายงาน ณ ไตรมาส ที่:</label>
                         </div>
                         <div class="col-65">
-                            <select name="progress_quarter" class="inputFill-Information-small" id="project_name"
-                                required>
-                                <option value=""> กรุณาเลือก </option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
+                            <select name="progress_quarter" class="inputFill-Information-small mt 30" id="project_name"
+                                readonly>
+                                <option value="<?php echo $row['project_fiscal_year'];?>">
+                                    <?php echo $row['project_fiscal_year'];?> </option>
                             </select>
+
                         </div>
                     </div>
                     <div class="row">
@@ -242,25 +235,8 @@ WHERE project_info.project_id=$project_id";
                                         <th>ราคา</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr class="box-input act-input">
-                                        <td class="text-left">
-                                            <input type="text" name="compensation[item][]">
-                                            <span for="" class="item"></span>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="input-quantity" name="compensation[quantity][]">
-                                            <span for="" class="quantity"></span>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="input-price" name="compensation[price][]">
-                                            <span for="" class="price"></span>
-                                            <a href="#" data-action="clone" data-target="compensation"><i
-                                                    class="fa fa-plus" aria-hidden="true"></i></a>
-                                            <a href="#" data-action="remove"><i class="fa fa-minus"
-                                                    aria-hidden="true"></i></a>
-                                        </td>
-                                    </tr>
+                                <tbody id="tbodyCompensation">
+
                                 </tbody>
                             </table>
                         </div>
@@ -278,25 +254,8 @@ WHERE project_info.project_id=$project_id";
                                         <th>ราคา</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr class="box-input act-input">
-                                        <td class="text-left">
-                                            <input type="text" name="cost[item][]">
-                                            <span for="" class="item"></span>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="input-quantity" name="cost[quantity][]">
-                                            <span for="" class="quantity"></span>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="input-price" name="cost[price][]">
-                                            <span for="" class="price"></span>
-                                            <a href="#" data-action="clone" data-target="cost"><i class="fa fa-plus"
-                                                    aria-hidden="true"></i></a>
-                                            <a href="#" data-action="remove"><i class="fa fa-minus"
-                                                    aria-hidden="true"></i></a>
-                                        </td>
-                                    </tr>
+                                <tbody id="tbodyCost">
+
                                 </tbody>
                             </table>
                         </div>
@@ -314,25 +273,8 @@ WHERE project_info.project_id=$project_id";
                                         <th>ราคา</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr class="box-input act-input">
-                                        <td class="text-left">
-                                            <input type="text" name="material[item][]">
-                                            <span for="" class="item"></span>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="input-quantity" name="material[quantity][]">
-                                            <span for="" class="quantity"></span>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="input-price" name="material[price][]">
-                                            <span for="" class="price"></span>
-                                            <a href="#" data-action="clone" data-target="material"><i class="fa fa-plus"
-                                                    aria-hidden="true"></i></a>
-                                            <a href="#" data-action="remove"><i class="fa fa-minus"
-                                                    aria-hidden="true"></i></a>
-                                        </td>
-                                    </tr>
+                                <tbody id="tbodyMaterial">
+
                                 </tbody>
                             </table>
                         </div>
@@ -365,14 +307,16 @@ WHERE project_info.project_id=$project_id";
                         <div class="col-65">
                             <label for="ตัวชี้วัดโครงการ" class="topic">1. </label>
                             <input type="text" id="indicator_1" name="indicator_1" class="inputFill-Information"
-                                required>
+                                required value="<?php echo $row['indicator_1'];?>
+                                ">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-65">
                             <label for="ลักษณะโครงการ : " class="topic">ค่าเป้าหมาย : </label>
                             <input type="text" id="indicator_1_value" name="indicator_1_value"
-                                class="inputFill-Information-Datepicker" required>
+                                class="inputFill-Information-Datepicker" required value="<?php echo $row['indicator_1_value'];?>
+                                ">
                         </div>
                     </div>
                     <div class="row">
@@ -387,14 +331,16 @@ WHERE project_info.project_id=$project_id";
                         <div class="col-65">
                             <label for="ลักษณะโครงการ : " class="topic">2. </label>
                             <input type="text" id="indicator_2" name="indicator_2" class="inputFill-Information"
-                                required>
+                                required value="<?php echo $row['indicator_2'];?>
+                                ">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-65">
                             <label for="ลักษณะโครงการ : " class="topic">ค่าเป้าหมาย : </label>
                             <input type="text" id="indicator_2_value" name="indicator_2_value"
-                                class="inputFill-Information-Datepicker" required>
+                                class="inputFill-Information-Datepicker" required value="<?php echo $row['indicator_2_value'];?>
+                                ">
                         </div>
                     </div>
                     <div class="row">
@@ -427,7 +373,7 @@ WHERE project_info.project_id=$project_id";
                         </div>
                         <div class="col-65">
                             <input type="text" name="responsible_man"
-                                value="<?php foreach ($result_Username as $results) { ?><?php echo $results["user_firstname"]; ?> &nbsp; <?php echo $results["user_lastname"] ?> <?php } ?>"
+                                value="<?php echo $row["user_firstname"]; ?> &nbsp; <?php echo $row["user_lastname"] ?> "
                                 class="inputFill-Information" readonly>
                         </div>
                     </div>

@@ -21,14 +21,14 @@
             $result = mysqli_query($conn,$query);
             $row = mysqli_fetch_array($result);
             // echo $row . "\n";
-            foreach($row as $rows){
-                // echo $row . "\n";
-                echo("<script>console.log('result ".$row."');</script>");
-            };
+            // foreach($row as $rows){
+            //     // echo $row . "\n";
+            //     echo("<script>console.log('result ".$row."');</script>");
+            // };
             if (mysqli_num_rows($result) == 1) {
                 $_SESSION['user_email']=$email;
                 $_SESSION['user_id']=$row["user_id"];
-                if ($row["user_status"]) {
+                if ($row["user_status"]==2) {
                 $_SESSION['success']='Your are now loggen in';
                 header("location: index.php");
                 }else{

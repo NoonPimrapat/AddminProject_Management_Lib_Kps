@@ -160,8 +160,8 @@ if (isset($_GET['logout'])) {
                     <div class="col-75">
                         <select name="type_sex" required>
                             <option value=""> กรุณาเลือก </option>
-                            <option value="M"> ชาย </option>
-                            <option value="F"> หญิง </option>
+                            <option value="1"> ชาย </option>
+                            <option value="2"> หญิง </option>
                         </select>
                     </div>
                 </div>
