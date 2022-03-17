@@ -1,34 +1,27 @@
 <?php
-session_start();
+//session_start();
 
+include('check_login.php');
 include('../config/db.php');
-$project_id = $_SESSION['project_id'];
+include ('service.php');
+$project_id = $_GET['id'];
 $user_id = $_SESSION['user_id'];
-// ถ้าไม่loginก็จะเข้าหน้านี้ไม่ได้
-if (!isset($_SESSION['user_email'])) {
-    $_SESSION['msg'] = "You must log in first";
-    header('location: login.php');
-}
-if (isset($_GET['logout'])) {
-    session_destroy();
-    unset($_SESSION['user_email']);
-    header('location: login.php');
-}
+
 
 //1. query ข้อมูลจากตาราง user_details:
-$queryproject = "SELECT * FROM project_info WHERE project_id = '64'" or die("Error:" . mysqli_error());
+$queryproject = "SELECT * FROM project_info WHERE project_id = '28'" or die("Error:" . mysqli_error());
 //เก็บข้อมูลที่ query ออกมาไว้ในตัวแปร result .
 $result_project = mysqli_query($conn, $queryproject);
 
 foreach ($result_project as $values) {
     $project_name = $values["project_name"];
-    $project_fiscal_year = $values["project_fiscal_year"]; //งบประมาณ
+    $year = $values["project_fiscal_year"]; //งบประมาณ
     $user_id = $values["user_id"]; //ผู้รับผิดชอบโครงการ
     $department_id = $values["department_id"]; //ไอดีฝ่าย
-    $project_fiscal_year = $values["project_fiscal_year"]; //ชื่อผู้อำนวยการ
-    $submit_date = $values["submit_date"]; //วันที่
-    $project_sum_total=$values["project_sum_total"];
-    $project_sum_thai;
+//    $project_fiscal_year = $values["project_fiscal_year"]; //ชื่อผู้อำนวยการ
+//    $submit_date = $values["submit_date"]; //วันที่
+    $project_sum_total = $values["project_sum_total"];
+    $project_sum_thai = convert($project_sum_total);
     
     // list($y,$m,$d,$h,$mi)=explode('-',':',$submit_date);
     // // echo$d.'/'.$m.'/'.$y;
@@ -36,46 +29,52 @@ foreach ($result_project as $values) {
     // $format = "d/m/Y";
     // echo $date=$format(submit_date);
     // echo DATE_FORMAT($submit_date,'d/m/Y');
-   
-	function DateThai($submit_date)
-	{
-		$strYear = date("Y",strtotime($submit_date))+543;
-		$strMonth= date("n",strtotime($submit_date));
-		$strDay= date("j",strtotime($submit_date));
-		$strHour= date("H",strtotime($submit_date));
-		$strMinute= date("i",strtotime($submit_date));
-		$strSeconds= date("s",strtotime($submit_date));
-		$strMonthCut = Array("","ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค.");
-		$strMonthThai=$strMonthCut[$strMonth];
-         return "$strDay $strMonthThai $strYear";
-        //  return "$strDay $strMonthThai $strYear, $strHour:$strMinute";
-	}
-
-	 $strDate = DateThai($submit_date);
-
-
 
 }
+
+
+$strDate = DateThai(date('Y-m-d H:i:s'));
 
 //1. query ข้อมูลจากตาราง user_details:
 $queryDerpartment = "SELECT * FROM department_info WHERE department_id = '$department_id'" or die("Error:" . mysqli_error());
 //เก็บข้อมูลที่ query ออกมาไว้ในตัวแปร result .
 $result_Derpartment = mysqli_query($conn, $queryDerpartment);
 foreach ($result_Derpartment as $values) {
-    $Derpartment_name = $values["department_name"]; //ชื่อฝ่าย
+    $dept_name = $values["department_name"]; //ชื่อฝ่าย
 }
 
 //1. query ข้อมูลจากตาราง user_details:
 $queryUser = "SELECT * FROM user_details WHERE user_id = '$user_id'" or die("Error:" . mysqli_error());
-//เก็บข้อมูลที่ query ออกมาไว้ในตัวแปร result .
 $result_user = mysqli_query($conn, $queryUser);
 foreach ($result_user as $values) {
     $firstname = $values["user_firstname"]; //ชื่อ
     $lastname = $values["user_lastname"]; //นามสกุล
+    $name = $firstname .' '.$lastname;
 }
-// สร้างword
-// header("Content-Type: application/msword");
-// header('Content-Disposition: attachment; filename="filename.doc"');
+
+require_once 'PHPWord.php';
+// Add var Word Document
+$PHPWord = new PHPWord();
+$templateProcessor = $PHPWord->loadTemplate(__dir__.'/close_project.docx');
+
+/* fill data */
+$templateProcessor->setValue('dept', $dept_name);
+$templateProcessor->setValue('project_name', $project_name);
+$templateProcessor->setValue('total', number_format($project_sum_total));
+$templateProcessor->setValue('total_thai', $project_sum_thai);
+$templateProcessor->setValue('year', $year);
+$templateProcessor->setValue('name', $name);
+$templateProcessor->setValue('date', $strDate);
+
+$fileName = 'ขออนุมัติปิดโตรงการ'.$project_name/*.'-'.date('d-m-Y his')*/;
+$templateProcessor->save('file_word/'.$fileName.'.docx');
+$file = (__DIR__.'/file_word/'.$fileName.'.docx');
+//$file = ('/file_word/'.$fileName.'.docx');
+
+$file = preg_replace('/C:\\\\xampp\\\\htdocs/','',$file);
+$file = preg_replace('/\\\\/','/',$file);
+
+
 
 ?>
 
@@ -99,7 +98,7 @@ foreach ($result_user as $values) {
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
         integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="css/project_edit.css">
     <!-- custom css -->
 
     <link rel="stylesheet" href="css/wordReport.css">
@@ -133,7 +132,7 @@ foreach ($result_user as $values) {
         </p>
         <div class="inline">
             <p>ส่วนงาน <u
-                    class="border-bottom"><?php echo $Derpartment_name?>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u>
+                    class="border-bottom"><?php echo $dept_name?>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u>
             </p>
             <div class="right">
                 <u class="border-bottom"> สำนักหอสมุด กำแพงแสน โทร 0-3435-1884 ภายใน 3802</u>
@@ -163,8 +162,8 @@ foreach ($result_user as $values) {
         <div class="indent">
             <u>
                 ตามที่ได้ขออนุมัติจัด <?php echo $project_name?>
-                ภายในวงเงิน จำนวน <?php echo $project_sum_total?> .-บาท<?php echo $project_fiscal_year?> (
-                <?$project_sum_thai?>)
+                ภายในวงเงิน จำนวน <?php echo $project_sum_total?> .-บาท (
+                <?php echo $project_sum_thai?>)
                 ตามบันทึกที่ อว ๖๕๐๒.๐๘/ ลงวันที่และได้รับอนุมัติแล้วนั้น
             </u>
         </div>
@@ -173,7 +172,7 @@ foreach ($result_user as $values) {
             <u>
                 บัดนี้ ได้ดำเนินการจิกกรรมดังกล่าวเสร็จเรียบร้อยแล้ว
                 โดยมีค่าใช้จ่ายรวมเป็นเงินทั้งสิ้น<?php echo $project_sum_total?> .-บาท (
-                <?$project_sum_thai?>) ดังนั้น จึงขออนุมัติเบิกจ่ายค่าใช้จ่ายและปิดโครงการดังกล่าว
+                <?php echo $project_sum_thai?>) ดังนั้น จึงขออนุมัติเบิกจ่ายค่าใช้จ่ายและปิดโครงการดังกล่าว
                 ทั้งนี้มีรายละเอียดตามเอกสารดังแนบ
             </u>
         </div>
@@ -182,20 +181,25 @@ foreach ($result_user as $values) {
         <u> จึงเรียนมาเพื่อโปรดพิจารณาอนุมัติ</u>
         <div class="right">
             <u>
-                (<?php echo $firstname?>&nbsp;<?php echo $lastname?>)
+                (<?php echo $name ?>)
                 <br />
                 ผู้รับผิดชอบโครงการ
             </u>
         </div>
 
-        <div class="container-button">
-            <button onclick="parent.location='home.php'" class="backButton">Back </button>
+        <div class="container-button center mt-30">
+            <button onclick="parent.location='project_manage_edit_close_project.php?id=<?php echo $project_id ?>'" class="backButton">Back </button>
+            <button onclick="Download();" class="summitButton btn-success">Download</button>
             <?php
             unset($_SESSION['project_id']);
             ?>
-
         </div>
     </div>
 </body>
 
 </html>
+<script>
+    function Download() {
+        window.open('<?php echo $file?>', '_self');
+    };
+</script>

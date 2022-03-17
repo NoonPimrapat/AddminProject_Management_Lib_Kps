@@ -1,7 +1,6 @@
 <?php
 
-
-    session_start();
+    include('check_login.php');
     include('../config/db.php');
     $project_id = $_GET['id'];
     $user_id = $_SESSION['user_id'];
@@ -12,15 +11,24 @@ WHERE project_info.project_id=$project_id";
     $result = mysqli_query($conn, $query) or die("Error in sql : $query". mysqli_error($conn));
     $row = mysqli_fetch_array($result);
 
-     $queryde = "SELECT * FROM department_info" or die("Error:" . mysqli_error());
+     $queryde = "SELECT * FROM department_info" or die("Error:" . mysqli_error($conn));
      $departments = mysqli_query($conn, $queryde);
+     $department_name = $departments->fetch_assoc()['department_name'];
 
-     $queryStyle = "SELECT * FROM project_style_info ORDER BY project_style_id asc" or die("Error:" . mysqli_error());
-    // เก็บข้อมูลที่ query ออกมาไว้ในตัวแปร result .
+     $queryStyle = "SELECT * FROM project_style_info"  or die("Error:" . mysqli_error($conn));
      $styles = mysqli_query($conn, $queryStyle);
 
-     $queryPlan = "SELECT * FROM project_plant WHERE project_id=$project_id";
-     $plans = mysqli_query($conn, $queryPlan);
+
+    $queryProgress = "SELECT * FROM progress_info WHERE project_id=$project_id";
+    $progress_info = mysqli_query($conn, $queryProgress);
+//    var_export(iterator_to_array($progress_info));exit;
+    $progress_info = $progress_info->fetch_assoc();
+
+
+//     $queryPlan = "SELECT * FROM project_plant WHERE project_id=$project_id";
+//     $plans = mysqli_query($conn, $queryPlan);
+     include('service_query.php');
+     list($groupBudget,$sum) = queryReportBudgets($project_id);
 ?>
 
 <!DOCTYPE html>
@@ -139,7 +147,7 @@ WHERE project_info.project_id=$project_id";
 
         </div>
         <div class="grid-item-line">
-            <form action="approval_db.php" method="post">
+            <form action="close_project_db.php" method="post">
                 <?php include('errors.php'); ?>
                 <?php if (isset($_SESSION['error'])) : ?>
                 <div class="error">
@@ -158,14 +166,9 @@ WHERE project_info.project_id=$project_id";
                         </div>
 
                         <div class="col-65">
-                            <select name="pro_name" class="inputFill-Information" id="pro_name" required>
-                                <option value=""> กรุณาเลือก </option>
-                                <?php foreach ($result_ProjectName as $results) { ?>
-                                <option value="<?php echo $results["project_id"]; ?>">
-                                    <?php echo $results["project_name"]; ?>
-                                </option>
-                                <?php } ?>
-                            </select>
+                            <input type="hidden" name="project_id" value="<?php echo $row['project_id'];?>">
+                            <input type="text" class="inputFill-Information" name="project_name" required
+                                   value="<?php echo $row['project_name'];?>" readonly>
                         </div>
 
                     </div>
@@ -174,7 +177,20 @@ WHERE project_info.project_id=$project_id";
                             <label for="ลักษณะโครงการ" class="topic">ลักษณะโครงการ : </label>
                         </div>
                         <div class="col-65">
-                            <input type="text" name="pro_style" class="inputFill-Information" id="pro_style">
+                            <?php foreach ($styles as $style): ?>
+                                <?php if((string) $row['project_style'] === (string) $style['project_style_id']): ?>
+                                    <input name="project_style" class="radio-project-edit"
+                                           id="radio_<?php echo $style['project_style_id'] ?>" type="radio"
+                                           value="<?php echo $style['project_style_id'] ?>" checked>
+                                <?php else: ?>
+                                    <input name="project_style" class="radio-project-edit"
+                                           id="radio_<?php echo $style['project_style_id'] ?>" type="radio"
+                                           value="<?php echo $style['project_style_id'] ?>" required>
+                                <?php endif; ?>
+                                <label class="form-check-label" for="radio_<?php echo $style['project_style_id'] ?>">
+                                    <?php echo $style['project_style_name'] ?>
+                                </label>
+                            <?php endforeach;?>
                         </div>
                     </div>
                     <div class="row">
@@ -182,7 +198,8 @@ WHERE project_info.project_id=$project_id";
                             <label for="ภายใต้ยุทธศาสตร์" class=" topic">ภายใต้ยุทธศาสตร์ : </label>
                         </div>
                         <div class="col-65">
-                            <input type="text" name="pro_strategy" class="inputFill-Information" id="pro_strategy">
+                            <input type="text" name="project_strategy" class="inputFill-Information" id="project_strategy"
+                                   value="<?php  if(!empty($row['project_strategy'])) echo $row['project_strategy'];?>">
                         </div>
                     </div>
                     <div class="row">
@@ -190,7 +207,8 @@ WHERE project_info.project_id=$project_id";
                             <label for="ภายใต้แผนงานประจำ" class="topic">ภายใต้แผนงานประจำ : </label>
                         </div>
                         <div class="col-65">
-                            <input type="text" name="pro_routine" class="inputFill-Information" id="routine_plan">
+                            <input type="text" name="routine_plan" class="inputFill-Information" id="routine_plan"
+                                   value="<?php if(!empty($row['routine_plan']))echo $row['routine_plan'];?>">
                         </div>
                     </div>
                     <div class="row">
@@ -198,8 +216,19 @@ WHERE project_info.project_id=$project_id";
                             <label for="ฝ่ายงาน" class="topic">ฝ่ายงาน : </label>
                         </div>
                         <div class="col-65">
-                            <input type="text" name="pro_department" class="inputFill-Information" id="department">
-
+                            <select class="inputFill-Information" name="department_id" required>
+                                <?php if($departments->num_rows > 0):
+                                    foreach($departments as $department): ?>
+                                        <?php if($department['department_id'] === $row['department_id']): ?>
+                                            <option selected value="<?php echo $department['department_id'] ?>">
+                                                <?php echo $department['department_name']?></option>
+                                        <?php else: ?>
+                                            <option value="<?php echo $department['department_id'] ?>">
+                                                <?php echo $department['department_name']?></option>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                <?php endif ?>
+                            </select>
                         </div>
                     </div>
                     <div class=" row">
@@ -207,8 +236,8 @@ WHERE project_info.project_id=$project_id";
                             <label for="วัตถุประสงค์" class="topic">วัตถุประสงค์ : </label>
                         </div>
                         <div class="col-65">
-                            <input type="text" name="pro_objective" class="inputFill-Information" id="pro_objective"
-                                required>
+                            <input type="text" name="objective" class="inputFill-Information" id="project_objective"
+                                required value="<?php if(!empty($row['objective'])) echo $row['objective'] ?>">
                         </div>
                     </div>
                     <div class="row">
@@ -216,8 +245,8 @@ WHERE project_info.project_id=$project_id";
                             <label for="ลักษณะการดำเนินงาน" class="topic">รายละเอียดจัดโครงการ : </label>
                         </div>
                         <div class="col-65">
-                            <textarea name="pro_operation" rows="4" cols="50" class="inputFill-Information-large"
-                                id="reason" required></textarea>
+                            <textarea name="operation" rows="4" cols="50" class="inputFill-Information-large"
+                                id="reason" required><?php if(!empty($row['operation'])) echo $row['operation'] ?></textarea>
                         </div>
                     </div>
                     <div class="row">
@@ -226,12 +255,12 @@ WHERE project_info.project_id=$project_id";
                         </div>
                         <div class="col-65">
 
-                            <input type="date" id="dateStart" name="pro_dateStart"
-                                class="inputFill-Information-Datepicker" required>
+                            <input type="date" id="dateStart" name="period_op"
+                                class="inputFill-Information-Datepicker" required value="<?php echo $row['period_op'] ?>">
                             <label-inline class="topic">ถึง</label-inline>
 
-                            <input type="date" id="dateEnd" name="pro_dateEnd" class="inputFill-Information-Datepicker"
-                                required>
+                            <input type="date" id="dateEnd" name="period_ed" class="inputFill-Information-Datepicker"
+                                required value="<?php echo $row['period_ed'] ?>">
                         </div>
                     </div>
                     <div class="row">
@@ -239,7 +268,8 @@ WHERE project_info.project_id=$project_id";
                             <label for="สถานที่ " class="topic">สถานที่ : </label>
                         </div>
                         <div class="col-65">
-                            <input type="text" name="pro_place" class="inputFill-Information" id="pro_place" required>
+                            <input type="text" name="project_place" class="inputFill-Information" id="project_place" required
+                                   value="<?php echo $row['project_place'] ?>">
                         </div>
                     </div>
                     <div class="row">
@@ -264,24 +294,52 @@ WHERE project_info.project_id=$project_id";
                                     </tr>
                                 </thead>
                                 <tbody id="tbodyCompensation">
-                                    <!-- <tr class="box-input act-input">
+                                <?php if(!empty($groupBudget['compensation'])): ?>
+                                    <?php foreach ($groupBudget['compensation'] as $index => $budget) : ?>
+                                        <tr class="box-input">
+                                            <input type="hidden" name="compensation[budget_id][]" value="<?php echo $budget['report_budget_id']?>">
+                                            <td class="text-left">
+                                                <input type="text" class="hiden" value="<?php echo $budget['report_item'] ?>" name="compensation[item][]" required>
+                                                <span for="" class="item "><?php echo $budget['report_item'] ?></span>
+                                            </td>
+                                            <td>
+                                                <input type="number" class="input-quantity hiden" value="<?php echo $budget['report_quantity'] ?>" name="compensation[quantity][]" required>
+                                                <span for="" class="quantity"><?php echo $budget['report_quantity'] ?></span>
+                                            </td>
+                                            <td>
+                                                <input type="number" class="input-price hiden" min="0" value="<?php echo $budget['report_price'] ?>" name="compensation[price][<?php /*echo $index*/ ?>]" required>
+                                                <span for="" class="price"><?php echo $budget['report_price'] ?></span>
+                                                <?php if(end($groupBudget['cost']) === $budget)  /* last element*/ :?>
+                                                    <a href="#" data-action="clone" data-target="compensation"><i
+                                                                class="fa fa-plus" aria-hidden="true"></i></a>
+                                                    <a href="#" data-action="remove"><i class="fa fa-minus"
+                                                                                        aria-hidden="true"></i></a>
+                                                <?php else: ?>
+                                                    <a href="#" data-action="remove"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                                                <?php endif; ?>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach ?>
+                                <?php endif; ?>
+                                <tr class="box-input act-input">
                                     <td class="text-left">
-                                        <input type="text" name="compensation[item][]" id="compensation[item][]">
-                                        <span for="" class="item" id="compensation[item][]"></span>
+                                        <input type="text" name="compensation[item][]">
+                                        <span for="" class="item"></span>
                                     </td>
                                     <td>
-                                        <input type="number" name="compensation[quantity][]">
+                                        <input type="number" class="input-quantity "
+                                               name="compensation[quantity][]">
                                         <span for="" class="quantity"></span>
                                     </td>
                                     <td>
                                         <input type="number" class="input-price" name="compensation[price][]">
                                         <span for="" class="price"></span>
-                                        <a href="#" data-action="clone" data-target="compensation"><i class="fa fa-plus"
-                                                aria-hidden="true"></i></a>
+                                        <a href="#" data-action="clone" data-target="compensation"><i
+                                                    class="fa fa-plus" aria-hidden="true"></i></a>
                                         <a href="#" data-action="remove"><i class="fa fa-minus"
-                                                aria-hidden="true"></i></a>
+                                                                            aria-hidden="true"></i></a>
                                     </td>
-                                </tr> -->
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -300,7 +358,51 @@ WHERE project_info.project_id=$project_id";
                                     </tr>
                                 </thead>
                                 <tbody id="tbodyCost">
-
+                                <?php if(!empty($groupBudget['cost'])): ?>
+                                    <?php foreach ($groupBudget['cost'] as $index => $budget) : ?>
+                                        <tr class="box-input">
+                                            <input type="hidden" name="cost[budget_id][]" value="<?php echo $budget['report_budget_id']?>">
+                                            <td class="text-left">
+                                                <input type="text" class="hiden" value="<?php echo $budget['report_item'] ?>" name="cost[item][]" required>
+                                                <span for="" class="item "><?php echo $budget['report_item'] ?></span>
+                                            </td>
+                                            <td>
+                                                <input type="number" class="input-quantity hiden" value="<?php echo $budget['report_quantity'] ?>" name="cost[quantity][]" required>
+                                                <span for="" class="quantity"><?php echo $budget['report_quantity'] ?></span>
+                                            </td>
+                                            <td>
+                                                <input type="number" class="input-price hiden" min="0" value="<?php echo $budget['report_price'] ?>" name="cost[price][<?php /*echo $index*/ ?>]" required>
+                                                <span for="" class="price"><?php echo $budget['report_price'] ?></span>
+                                                <?php if(end($groupBudget['cost']) === $budget)  /* last element*/ :?>
+                                                    <a href="#" data-action="clone" data-target="compensation"><i
+                                                                class="fa fa-plus" aria-hidden="true"></i></a>
+                                                    <a href="#" data-action="remove"><i class="fa fa-minus"
+                                                                                        aria-hidden="true"></i></a>
+                                                <?php else: ?>
+                                                    <a href="#" data-action="remove"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                                                <?php endif; ?>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach ?>
+                                <?php endif; ?>
+                                <tr class="box-input act-input">
+                                    <td class="text-left">
+                                        <input type="text" name="cost[item][]">
+                                        <span for="" class="item"></span>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="input-quantity" name="cost[quantity][]">
+                                        <span for="" class="quantity"></span>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="input-price" name="cost[price][]">
+                                        <span for="" class="price"></span>
+                                        <a href="#" data-action="clone" data-target="cost"><i class="fa fa-plus"
+                                                                                              aria-hidden="true"></i></a>
+                                        <a href="#" data-action="remove"><i class="fa fa-minus"
+                                                                            aria-hidden="true"></i></a>
+                                    </td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -319,7 +421,51 @@ WHERE project_info.project_id=$project_id";
                                     </tr>
                                 </thead>
                                 <tbody id="tbodyMaterial">
-
+                                <?php if(!empty($groupBudget['material'])): ?>
+                                    <?php foreach ($groupBudget['material'] as $index => $budget) : ?>
+                                        <tr class="box-input">
+                                            <input type="hidden" name="material[budget_id][]" value="<?php echo $budget['report_budget_id']?>">
+                                            <td class="text-left">
+                                                <input type="text" class="hiden" value="<?php echo $budget['report_item'] ?>" name="material[item][]" required>
+                                                <span for="" class="item "><?php echo $budget['report_item'] ?></span>
+                                            </td>
+                                            <td>
+                                                <input type="number" class="input-quantity hiden" value="<?php echo $budget['report_quantity'] ?>" name="material[quantity][]" required>
+                                                <span for="" class="quantity"><?php echo $budget['report_quantity'] ?></span>
+                                            </td>
+                                            <td>
+                                                <input type="number" class="input-price hiden" min="0" value="<?php echo $budget['report_price'] ?>" name="material[price][<?php /*echo $index*/ ?>]" required>
+                                                <span for="" class="price"><?php echo $budget['report_price'] ?></span>
+                                                <?php if(end($groupBudget['cost']) === $budget)  /* last element*/ :?>
+                                                    <a href="#" data-action="clone" data-target="compensation"><i
+                                                                class="fa fa-plus" aria-hidden="true"></i></a>
+                                                    <a href="#" data-action="remove"><i class="fa fa-minus"
+                                                                                        aria-hidden="true"></i></a>
+                                                <?php else: ?>
+                                                    <a href="#" data-action="remove"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                                                <?php endif; ?>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach ?>
+                                <?php endif; ?>
+                                <tr class="box-input act-input">
+                                    <td class="text-left">
+                                        <input type="text" name="material[item][]">
+                                        <span for="" class="item"></span>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="input-quantity" name="material[quantity][]">
+                                        <span for="" class="quantity"></span>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="input-price" name="material[price][]">
+                                        <span for="" class="price"></span>
+                                        <a href="#" data-action="clone" data-target="material"><i class="fa fa-plus"
+                                                                                                  aria-hidden="true"></i></a>
+                                        <a href="#" data-action="remove"><i class="fa fa-minus"
+                                                                            aria-hidden="true"></i></a>
+                                    </td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -349,19 +495,19 @@ WHERE project_info.project_id=$project_id";
                         <div class="col-65">
                             <label for="ตัวชี้วัดโครงการ" class="topic">1. </label>
                             <input type="text" id="indicator_1" name="indicator_1" class="inputFill-Information"
-                                required>
+                                required value="<?php if(!empty($row['indicator_1'])) echo $row['indicator_1'] ?>">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-65">
                             <label for="ลักษณะโครงการ : " class="topic">เป้าหมายที่กำหนดไว้ : </label>
                             <input type="text" id="indicator_1_value" name="indicator_1_value"
-                                class="inputFill-Information-Datepicker" required>
+                                class="inputFill-Information-Datepicker" required value="<?php if(!empty($row['indicator_1_value'])) echo $row['indicator_1_value'] ?>">
                         </div>
                         <div class="col-65">
                             <label for="ลักษณะโครงการ : " class="topic">ผลการดำเนินงาน : </label>
-                            <input type="text" id="indicator_performance1" name="indicator_performance1"
-                                class="inputFill-Information-Datepicker" required>
+                            <input type="text" id="progress_indicator_1" name="progress_indicator_1"
+                                class="inputFill-Information-Datepicker" required value="<?php if(!empty($progress_info['progress_indicator_1'])) echo $progress_info['progress_indicator_1'] ?>">
                         </div>
 
                         <div class="col-65">
@@ -370,8 +516,8 @@ WHERE project_info.project_id=$project_id";
                             <select type="text" id="indicator_success1" name="indicator_success1"
                                 class="inputFill-Information-Datepicker" required>
                                 <option value=""> กรุณาเลือก </option>
-                                <option value="1"> สำเร็จ </option>
-                                <option value="2"> ไม่สำเร็จ </option>
+                                <option value="สำเร็จ"<?php if($row['indicator_success1'] === 'สำเร็จ') echo 'selected'?>> สำเร็จ </option>
+                                <option value="ไม่สำเร็จ"<?php if($row['indicator_success1'] === 'ไม่สำเร็จ') echo 'selected'?>> ไม่สำเร็จ </option>
                             </select>
                         </div>
 
@@ -382,19 +528,19 @@ WHERE project_info.project_id=$project_id";
                         <div class="col-65">
                             <label for="ลักษณะโครงการ : " class="topic">2. </label>
                             <input type="text" id="indicator_2" name="indicator_2" class="inputFill-Information"
-                                required>
+                                required value="<?php if(!empty($row['indicator_2'])) echo $row['indicator_2'] ?>">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-65">
                             <label for="ลักษณะโครงการ : " class="topic">เป้าหมายที่กำหนดไว้ : </label>
-                            <input type="text" id="indicator_2_value" name="indicator_1_value"
-                                class="inputFill-Information-Datepicker" required>
+                            <input type="text" id="indicator_2_value" name="indicator_2_value"
+                                class="inputFill-Information-Datepicker" required value="<?php if(!empty($row['indicator_2_value'])) echo $row['indicator_2_value'] ?>">
                         </div>
                         <div class="col-65">
                             <label for="ลักษณะโครงการ : " class="topic">ผลการดำเนินงาน : </label>
-                            <input type="text" id="indicator_performance1" name="indicator_performance2"
-                                class="inputFill-Information-Datepicker" required>
+                            <input type="text" id="progress_indicator_2" name="progress_indicator_2"
+                                class="inputFill-Information-Datepicker" required value="<?php if(!empty($progress_info['progress_indicator_2'])) echo $progress_info['progress_indicator_2'] ?>">
                         </div>
 
                         <div class="col-65">
@@ -403,8 +549,8 @@ WHERE project_info.project_id=$project_id";
                             <select type="text" id="indicator_success2" name="indicator_success2"
                                 class="inputFill-Information-Datepicker" required>
                                 <option value=""> กรุณาเลือก </option>
-                                <option value="1"> สำเร็จ </option>
-                                <option value="2"> ไม่สำเร็จ </option>
+                                <option value="สำเร็จ"<?php if($row['indicator_success2'] === 'สำเร็จ') echo 'selected'?>> สำเร็จ </option>
+                                <option value="ไม่สำเร็จ"<?php if($row['indicator_success2'] === 'ไม่สำเร็จ') echo 'selected'?>> ไม่สำเร็จ </option>
                             </select>
                         </div>
 
@@ -418,16 +564,16 @@ WHERE project_info.project_id=$project_id";
                         <div class="col-65">
 
                             <input type="text" name="responsible_man"
-                                value="<?php echo $row["user_firstname"]; ?> &nbsp; <?php echo $row["user_lastname"] ?> "
+                                value="<?php echo $row["user_firstname"]; ?> &nbsp; <?php echo $row["user_lastname"] ?>"
                                 class="inputFill-Information" readonly>
 
                         </div>
                     </div>
                     <div class="information-container">
-                        <label-1 for="ลักษณะโครงการ" class="topic">เอกสารแนบ </label>
+                        <label for="ลักษณะโครงการ" class="topic">เอกสารแนบ </label>
                     </div>
                     <div class="information-container">
-                        <label-1 for="ลักษณะโครงการ" class="topic">1.ภาพกิจกรรม (3-5 ภาพ) </label>
+                        <label for="ลักษณะโครงการ" class="topic">1.ภาพกิจกรรม (3-5 ภาพ) </label>
                             <input id="file-upload" name="activity_pictures" type="file" accept="image/*" multiple />
                     </div>
 
@@ -447,7 +593,14 @@ WHERE project_info.project_id=$project_id";
     <script src="./bahttex.js"></script>
     <script>
     var quantityAll = 0;
-    var priceAll = 0;
+    // var priceAll = 0;
+    let priceAll = <?php echo $sum ?>;
+    let priceTotal = priceAll.toFixed(2)
+    //var priceTotal = <?php //echo $sum ?>//;
+    var group = $(this).data('target');
+    $('#sum-total').html(`${priceTotal}.- บาท`);
+    $('#sum_total').val(priceTotal);
+    $('#bahttex').html('(' + ThaiBaht(priceAll.toFixed(2)) + ')')
     $(document).on('click', 'a[data-action="clone"]', function(e) {
         e.preventDefault();
         var err = false;
@@ -464,7 +617,7 @@ WHERE project_info.project_id=$project_id";
         $(section).find('.message-box').remove();
 
         // has error = true -- message alert pop
-        if (item.length == 0 || quantity.length == 0 || price.length == 0) {
+        if (item.length === 0 || quantity.length === 0 || price.length === 0) {
             $(section).append(
                 `<div class="message message-box"><div class="error"><h3>Enter is required</h3></div></div>`
             )
