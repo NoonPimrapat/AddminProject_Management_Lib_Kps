@@ -55,7 +55,7 @@ foreach ($result_user as $values) {
 require_once 'PHPWord.php';
 // Add var Word Document
 $PHPWord = new PHPWord();
-$templateProcessor = $PHPWord->loadTemplate(__dir__.'/close_project.docx');
+$templateProcessor = $PHPWord->loadTemplate(__dir__.'/template_word/close_project.docx');
 
 /* fill data */
 $templateProcessor->setValue('dept', $dept_name);

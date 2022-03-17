@@ -37,7 +37,7 @@ $name = $result['user_firstname'].' '.$result['user_lastname'];
 require_once 'PHPWord.php';
 // Add var Word Document
 $PHPWord = new PHPWord();
-$templateProcessor = $PHPWord->loadTemplate(__dir__.'/project_template.docx');
+$templateProcessor = $PHPWord->loadTemplate(__dir__.'/template_word/project_template.docx');
 
 /* fill data */
 $templateProcessor->setValue('dept', $dept);

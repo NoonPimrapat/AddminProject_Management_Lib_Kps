@@ -108,7 +108,7 @@ if (isset($_POST['disbursement'])) {
         // Add var Word Document
         $phpWord = new \PhpOffice\PhpWord\PhpWord();
 
-        $templateProcessor = $phpWord->loadTemplate(__dir__ . '/disbursement_project.docx');
+        $templateProcessor = $phpWord->loadTemplate(__dir__ . '/template_word/disbursement_project.docx');
         if(!empty($buffReport)) {
             foreach ($buffReport as $group => $list) {
                 foreach ($list as $key => $item) {
