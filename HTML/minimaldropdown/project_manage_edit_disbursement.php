@@ -1,5 +1,6 @@
 <?php
-    session_start();
+
+    include('check_login.php');
     include('../config/db.php');
     $project_id = $_GET['id'];
     $user_id = $_SESSION['user_id'];
@@ -10,15 +11,16 @@ WHERE project_info.project_id=$project_id";
     $result = mysqli_query($conn, $query) or die("Error in sql : $query". mysqli_error($conn));
     $row = mysqli_fetch_array($result);
 
-     $queryde = "SELECT * FROM department_info" or die("Error:" . mysqli_error());
-     $departments = mysqli_query($conn, $queryde);
+    $projectQuery = "SELECT project_name FROM project_info WHERE project_id=$project_id";
+    $project = mysqli_query($conn, $projectQuery) or die("Error:" . mysqli_error($conn));
+    //    echo '<pre>';
+    if($project->num_rows > 0 ) {
+        $project_name = $project->fetch_row()[0];
+        include('service_query.php');
+        list($groupBudget,$sum) = queryReportBudgets($project_id);
+    }
 
-     $queryStyle = "SELECT * FROM project_style_info ORDER BY project_style_id asc" or die("Error:" . mysqli_error());
-    // เก็บข้อมูลที่ query ออกมาไว้ในตัวแปร result .
-     $styles = mysqli_query($conn, $queryStyle);
 
-     $queryPlan = "SELECT * FROM project_plant WHERE project_id=$project_id";
-     $plans = mysqli_query($conn, $queryPlan);
 ?>
 
 <!DOCTYPE html>
@@ -150,6 +152,8 @@ WHERE project_info.project_id=$project_id";
                     </h3>
                 </div>
                 <?php endif ?>
+                <?php if($project->num_rows > 0 && isset($project_name)) : ?>
+                <input type="hidden" name="project_id" value="<?php echo $project_id?>">
                 <div class="grid-item">
                     <label for="โครงการ" class="topic">ขออนุมัตเบิกจ่ายเงินโครงการตามแผนปฏิบัติการประจำปี สำนักหอสมุด
                         กำแพงแสน</label>
@@ -208,6 +212,33 @@ WHERE project_info.project_id=$project_id";
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <?php if(!empty($groupBudget['compensation'])): ?>
+                                    <?php foreach ($groupBudget['compensation'] as $index => $budget) : ?>
+                                        <tr class="box-input">
+                                            <input type="hidden" name="compensation[budget_id][]" value="<?php echo $budget['report_budget_id']?>">
+                                            <td class="text-left">
+                                                <input type="text" class="hiden" value="<?php echo $budget['report_item'] ?>" name="compensation[item][]" required>
+                                                <span for="" class="item "><?php echo $budget['report_item'] ?></span>
+                                            </td>
+                                            <td>
+                                                <input type="number" class="input-quantity hiden" value="<?php echo $budget['report_quantity'] ?>" name="compensation[quantity][]" required>
+                                                <span for="" class="quantity"><?php echo $budget['report_quantity'] ?></span>
+                                            </td>
+                                            <td>
+                                                <input type="number" class="input-price hiden" min="0" value="<?php echo $budget['report_price'] ?>" name="compensation[price][<?php /*echo $index*/ ?>]" required>
+                                                <span for="" class="price"><?php echo $budget['report_price'] ?></span>
+                                                <?php if(end($groupBudget['cost']) === $budget)  /* last element*/ :?>
+                                                    <a href="#" data-action="clone" data-target="compensation"><i
+                                                                class="fa fa-plus" aria-hidden="true"></i></a>
+                                                    <a href="#" data-action="remove"><i class="fa fa-minus"
+                                                                                        aria-hidden="true"></i></a>
+                                                <?php else: ?>
+                                                    <a href="#" data-action="remove"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                                                <?php endif; ?>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach ?>
+                                <?php endif; ?>
                                     <tr class="box-input act-input">
                                         <td class="text-left">
                                             <input type="text" name="compensation[item][]">
@@ -245,6 +276,33 @@ WHERE project_info.project_id=$project_id";
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <?php if(!empty($groupBudget['cost'])): ?>
+                                    <?php foreach ($groupBudget['cost'] as $index => $budget) : ?>
+                                        <tr class="box-input">
+                                            <input type="hidden" name="cost[budget_id][]" value="<?php echo $budget['report_budget_id']?>">
+                                            <td class="text-left">
+                                                <input type="text" class="hiden" value="<?php echo $budget['report_item'] ?>" name="cost[item][]" required>
+                                                <span for="" class="item "><?php echo $budget['report_item'] ?></span>
+                                            </td>
+                                            <td>
+                                                <input type="number" class="input-quantity hiden" value="<?php echo $budget['report_quantity'] ?>" name="cost[quantity][]" required>
+                                                <span for="" class="quantity"><?php echo $budget['report_quantity'] ?></span>
+                                            </td>
+                                            <td>
+                                                <input type="number" class="input-price hiden" min="0" value="<?php echo $budget['report_price'] ?>" name="cost[price][<?php /*echo $index*/ ?>]" required>
+                                                <span for="" class="price"><?php echo $budget['report_price'] ?></span>
+                                                <?php if(end($groupBudget['cost']) === $budget)  /* last element*/ :?>
+                                                    <a href="#" data-action="clone" data-target="compensation"><i
+                                                                class="fa fa-plus" aria-hidden="true"></i></a>
+                                                    <a href="#" data-action="remove"><i class="fa fa-minus"
+                                                                                        aria-hidden="true"></i></a>
+                                                <?php else: ?>
+                                                    <a href="#" data-action="remove"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                                                <?php endif; ?>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach ?>
+                                <?php endif; ?>
                                     <tr class="box-input act-input">
                                         <td class="text-left">
                                             <input type="text" name="cost[item][]">
@@ -281,6 +339,33 @@ WHERE project_info.project_id=$project_id";
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <?php if(!empty($groupBudget['material'])): ?>
+                                    <?php foreach ($groupBudget['material'] as $index => $budget) : ?>
+                                        <tr class="box-input">
+                                            <input type="hidden" name="material[budget_id][]" value="<?php echo $budget['report_budget_id']?>">
+                                            <td class="text-left">
+                                                <input type="text" class="hiden" value="<?php echo $budget['report_item'] ?>" name="material[item][]" required>
+                                                <span for="" class="item "><?php echo $budget['report_item'] ?></span>
+                                            </td>
+                                            <td>
+                                                <input type="number" class="input-quantity hiden" value="<?php echo $budget['report_quantity'] ?>" name="material[quantity][]" required>
+                                                <span for="" class="quantity"><?php echo $budget['report_quantity'] ?></span>
+                                            </td>
+                                            <td>
+                                                <input type="number" class="input-price hiden" min="0" value="<?php echo $budget['report_price'] ?>" name="material[price][<?php /*echo $index*/ ?>]" required>
+                                                <span for="" class="price"><?php echo $budget['report_price'] ?></span>
+                                                <?php if(end($groupBudget['cost']) === $budget)  /* last element*/ :?>
+                                                    <a href="#" data-action="clone" data-target="compensation"><i
+                                                                class="fa fa-plus" aria-hidden="true"></i></a>
+                                                    <a href="#" data-action="remove"><i class="fa fa-minus"
+                                                                                        aria-hidden="true"></i></a>
+                                                <?php else: ?>
+                                                    <a href="#" data-action="remove"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                                                <?php endif; ?>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach ?>
+                                <?php endif; ?>
                                     <tr class="box-input act-input">
                                         <td class="text-left">
                                             <input type="text" name="material[item][]">
@@ -338,6 +423,11 @@ WHERE project_info.project_id=$project_id";
                         <button type="submit" name="disbursement" class="summitButton">Submit</button>
                     </div>
                 </div>
+                <?php else: ?>
+                    <div class="grid-item">
+                        <strong><div><h2>ไม่พบข้อมูล Project <?php echo 'ID : '. $project_id?></h2></div></strong>
+                    </div>
+                <?php endif;?>
             </form>
         </div>
 
@@ -348,7 +438,16 @@ WHERE project_info.project_id=$project_id";
     <script src="./bahttex.js"></script>
     <script>
     var quantityAll = 0;
-    var priceAll = 0;
+    // var priceAll = 0;
+    /* ----  ----  */
+    let priceAll = <?php echo $sum ?>;
+    let priceTotal = priceAll.toFixed(2)
+    //var priceTotal = <?php //echo $sum ?>//;
+    var group = $(this).data('target');
+    $('#sum-total').html(`${priceTotal}.- บาท`);
+    $('#sum_total').val(priceTotal);
+    $('#bahttex').html('(' + ThaiBaht(priceAll.toFixed(2)) + ')')
+    /* ----  ----  */
     $(document).on('click', 'a[data-action="clone"]', function(e) {
         e.preventDefault();
         var err = false;
