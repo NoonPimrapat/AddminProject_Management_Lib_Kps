@@ -569,13 +569,6 @@ WHERE project_info.project_id=$project_id";
 
                         </div>
                     </div>
-                    <div class="information-container">
-                        <label for="ลักษณะโครงการ" class="topic">เอกสารแนบ </label>
-                    </div>
-                    <div class="information-container">
-                        <label for="ลักษณะโครงการ" class="topic">1.ภาพกิจกรรม (3-5 ภาพ) </label>
-                            <input id="file-upload" name="activity_pictures" type="file" accept="image/*" multiple />
-                    </div>
 
                     <div class="container-button">
                         <button onclick="parent.location='home.php'" class="backButton">Back </button>

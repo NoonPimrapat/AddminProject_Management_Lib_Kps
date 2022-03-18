@@ -576,12 +576,6 @@ WHERE project_info.project_id=$project_id";
                             </svg>
                         </div>
                     </div>
-                    <div id='imageloadbutton'>
-                        <!-- เลือกได้หลายๆไฟล์ในครั้งเดียว   name="photos[]"  multiple="true"  -->
-                        <br>
-                        เลือกไฟล์ภาพ :
-                        <input type="file" name="photos[]" id="photoimg" multiple="true" />
-                    </div>
 
                 </form>
         </div>
