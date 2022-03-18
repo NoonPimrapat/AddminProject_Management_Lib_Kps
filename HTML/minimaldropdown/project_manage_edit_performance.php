@@ -176,7 +176,7 @@ WHERE project_info.project_id=$project_id";
                         <div class="col-25">
                             <label for="โครงการ" class="topic">รายงาน ณ ไตรมาส ที่:</label>
                         </div>
-                        <div class="col-65">
+                        <div class="col-65 mt-30">
                             <select name="progress_quarter" class="inputFill-Information-small mt 30" id="project_name"
                                     required>
                                 <?php if(!empty($progress_info['progress_quarter'])): ?>
@@ -466,7 +466,7 @@ WHERE project_info.project_id=$project_id";
                         </div>
                     </div>
                     <div class="information-container">
-                        <label-1 for="ลักษณะโครงการ" class="topic">รายงานผลการดำเนินงานตามตัวชี้วัด : </label>
+                        <label for="ลักษณะโครงการ" class="topic">รายงานผลการดำเนินงานตามตัวชี้วัด : </label>
                     </div>
                     <div class="row">
                         <div class="col-25">
@@ -521,19 +521,19 @@ WHERE project_info.project_id=$project_id";
                         </div>
                     </div>
                     <div class="information-container">
-                        <label-1 for="ลักษณะโครงการ" class="topic">เอกสารแนบ </label>
+                        <label for="ลักษณะโครงการ" class="topic">เอกสารแนบ </label>
                     </div>
                     <div class="information-container">
-                        <label-1 for="ลักษณะโครงการ" class="topic">1.ภาพกิจกรรม(5-10 ไฟล์) </label>
+                        <label for="ลักษณะโครงการ" class="topic">1.ภาพกิจกรรม(5-10 ไฟล์) </label>
                             <input id="file-upload" name="activity_pictures" type="file" accept="image/*" multiple />
                     </div>
                     <div class=" information-container">
-                        <label-1 for="ลักษณะโครงการ" class="topic">
+                        <label for="ลักษณะโครงการ" class="topic">
                             2.รายงานผลการประเมินความพึงพอใจ/การนำความรู้ไปใช้ประโยชน์(ถ้ามี)(3-5 ไฟล์) </label>
                             <input id="file-upload" name="assessment" type="file" accept="file_extension" multiple />
                     </div>
                     <div class="information-container">
-                        <label-1 for="ลักษณะโครงการ" class="topic">3.เอกสารการลงทะเบียนเข้าร่วมกิจกรรม(ถ้ามี)(3-5 ไฟล์)
+                        <label for="ลักษณะโครงการ" class="topic">3.เอกสารการลงทะเบียนเข้าร่วมกิจกรรม(ถ้ามี)(3-5 ไฟล์)
                             </label>
                             <input id="file-upload" name="registration" type="file" accept="file_extension" multiple />
                     </div>

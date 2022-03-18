@@ -227,7 +227,7 @@ WHERE project_info.project_id=$project_id";
                                             <td>
                                                 <input type="number" class="input-price hiden" min="0" value="<?php echo $budget['report_price'] ?>" name="compensation[price][<?php /*echo $index*/ ?>]" required>
                                                 <span for="" class="price"><?php echo $budget['report_price'] ?></span>
-                                                <?php if(end($groupBudget['cost']) === $budget)  /* last element*/ :?>
+                                                <?php if(array_key_last($groupBudget['compensation']) === $budget)  /* last element*/ :?>
                                                     <a href="#" data-action="clone" data-target="compensation"><i
                                                                 class="fa fa-plus" aria-hidden="true"></i></a>
                                                     <a href="#" data-action="remove"><i class="fa fa-minus"
@@ -291,7 +291,7 @@ WHERE project_info.project_id=$project_id";
                                             <td>
                                                 <input type="number" class="input-price hiden" min="0" value="<?php echo $budget['report_price'] ?>" name="cost[price][<?php /*echo $index*/ ?>]" required>
                                                 <span for="" class="price"><?php echo $budget['report_price'] ?></span>
-                                                <?php if(end($groupBudget['cost']) === $budget)  /* last element*/ :?>
+                                                <?php if(array_key_last($groupBudget['cost']) === $budget)  /* last element*/ :?>
                                                     <a href="#" data-action="clone" data-target="compensation"><i
                                                                 class="fa fa-plus" aria-hidden="true"></i></a>
                                                     <a href="#" data-action="remove"><i class="fa fa-minus"
@@ -354,7 +354,7 @@ WHERE project_info.project_id=$project_id";
                                             <td>
                                                 <input type="number" class="input-price hiden" min="0" value="<?php echo $budget['report_price'] ?>" name="material[price][<?php /*echo $index*/ ?>]" required>
                                                 <span for="" class="price"><?php echo $budget['report_price'] ?></span>
-                                                <?php if(end($groupBudget['cost']) === $budget)  /* last element*/ :?>
+                                                <?php if(array_key_last($groupBudget['material']) === $budget)  /* last element*/ :?>
                                                     <a href="#" data-action="clone" data-target="compensation"><i
                                                                 class="fa fa-plus" aria-hidden="true"></i></a>
                                                     <a href="#" data-action="remove"><i class="fa fa-minus"

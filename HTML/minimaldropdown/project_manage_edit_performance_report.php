@@ -210,10 +210,7 @@ $fileDoc = preg_replace('/\\\\/','/',$fileDoc);
 </head>
 
 <body>
-    <header>
 
-
-    </header>
     <div class="report-container">
         <h1 class="center">ตัวอย่างไฟล์ Document</h1>
         <div class="center">
@@ -232,7 +229,7 @@ $fileDoc = preg_replace('/\\\\/','/',$fileDoc);
         </div>
 
         <div class="mt-20">
-            <?php if (empty($plant->num_rows) > 0): ?>
+            <?php if (empty($plans->num_rows) > 0): ?>
                 <table class="table mt-15">
                     <thead>
                         <th>
@@ -240,7 +237,7 @@ $fileDoc = preg_replace('/\\\\/','/',$fileDoc);
                         </th>
                     </thead>
                     <tbody>
-                    <?php foreach($plant as $key => $value) : ?>
+                    <?php foreach($plans as $key => $value) : ?>
 
                     <tr class="box-input">
                         <td>
@@ -258,7 +255,7 @@ $fileDoc = preg_replace('/\\\\/','/',$fileDoc);
                     </th>
                     </thead>
                     <tbody>
-                    <?php foreach($plant as $key => $value) : ?>
+                    <?php foreach($plans as $key => $value) : ?>
                         <tr class="box-input">
                             <td>
                                 <span><?php echo '&nbsp;&nbsp;&nbsp;'.($key+1) .'. '. $value['report_time']?></span>
@@ -275,7 +272,7 @@ $fileDoc = preg_replace('/\\\\/','/',$fileDoc);
                     </th>
                     </thead>
                     <tbody>
-                    <?php foreach($plant as $key => $value) : ?>
+                    <?php foreach($plans as $key => $value) : ?>
                         <tr class="box-input">
                             <td>
                                 <span><?php echo '&nbsp;&nbsp;&nbsp;'.($key+1) .'. '. $value['report_place']?></span>
@@ -362,8 +359,6 @@ $fileDoc = preg_replace('/\\\\/','/',$fileDoc);
         </div>
 
 
-
-
         <div class="left mt-30 mb-20">
             <u>
                 (<?php echo $firstname?>&nbsp;<?php echo $lastname?>)
@@ -391,12 +386,10 @@ $fileDoc = preg_replace('/\\\\/','/',$fileDoc);
             </ul>
         </div>
 
-        <div class="container-button mt-30 center">
+        <div class="container-button mt-30 center mb-60">
             <button onclick="parent.location='project_manage_edit_performance.php?id=<?php echo $project_id ?>'" class="backButton">Back </button>
             <button onclick="Download();" class="backButton btn-success">Download </button>
-            <?php
-            unset($_SESSION['project_id']);
-            ?>
+            <?php unset($_SESSION['project_id']); ?>
 
         </div>
     </div>
@@ -404,6 +397,6 @@ $fileDoc = preg_replace('/\\\\/','/',$fileDoc);
 <script>
     function Download() {
         window.open('<?php echo $fileDoc?>', '_self');
-    };
+    }
 </script>
 </html>

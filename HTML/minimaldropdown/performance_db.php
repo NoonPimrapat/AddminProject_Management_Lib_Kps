@@ -97,41 +97,44 @@ if (!$resProgress) {
 /*--------- END PROJECT INFO --------*/
 
 /*----------- PLANTS ---------- */
-
-/* Delete first */
-$sqlDel = 'DELETE FROM report_plant where project_id=' . $project_id;
-$resDel = mysqli_query($conn, $sqlDel);
-
 $plants = getPlantFormat($_POST);
+if(!empty($plants)) {
+    /* Delete first */
+    $sqlDel = 'DELETE FROM report_plant where project_id=' . $project_id;
+    $resDel = mysqli_query($conn, $sqlDel);
+
 
 //var_export($plants);exit;
-$insertPlantsValues = '';
-foreach ($plants as $index => $item) {
-    $insert = "({$project_id},";
-    foreach ($item as $key => $value) {
-        $buffInsert[$key] = mysqli_real_escape_string($conn, trim($value));
-        if (empty($buffInsert[$key])) {
-            $_SESSION['error'] = "something went wrong";
-        }
-        $buffInsert[$key] = (string)'"' . $buffInsert[$key] . '"';
+    $insertPlantsValues = '';
+    foreach ($plants as $index => $item) {
+        $insert = "({$project_id},";
+        foreach ($item as $key => $value) {
+            $buffInsert[$key] = mysqli_real_escape_string($conn, trim($value));
+            if (empty($buffInsert[$key])) {
+                $_SESSION['error'] = "something went wrong";
+            }
+            $buffInsert[$key] = (string)'"' . $buffInsert[$key] . '"';
 
-        if (array_key_last($item) === $key) {
-            $insert .= "{$buffInsert[$key]})";
-        } else {
-            $insert .= "{$buffInsert[$key]},";
+            if (array_key_last($item) === $key) {
+                $insert .= "{$buffInsert[$key]})";
+            } else {
+                $insert .= "{$buffInsert[$key]},";
+            }
+        }
+        $insertPlantsValues .= $insert . ',';
+    }
+    if (!empty($insertPlantsValues)) {
+        $insertPlantsValues = substr($insertPlantsValues, 0, -1);
+        $sqlInsert = "INSERT INTO report_plant(project_id,report_detail,report_time,report_place) VALUES {$insertPlantsValues};";
+        $resInsert = mysqli_query($conn, $sqlInsert);
+//    var_export($resInsert);exit;
+        if (!$resInsert) {
+            $_SESSION['error'] .= ' report plant not update.';
         }
     }
-    $insertPlantsValues .= $insert . ',';
 }
-if (!empty($insertPlantsValues)) {
-    $insertPlantsValues = substr($insertPlantsValues, 0, -1);
-    $sqlInsert = "INSERT INTO report_plant(project_id,report_detail,report_time,report_place) VALUES {$insertPlantsValues};";
-    $resInsert = mysqli_query($conn, $sqlInsert);
-//    var_export($resInsert);exit;
-    if (!$resInsert) {
-        $_SESSION['error'] .= ' report plant not update.';
-    }
-}
+
+
 
 /*-----------END PLANTS ---------- */
 

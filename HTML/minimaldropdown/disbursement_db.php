@@ -48,17 +48,24 @@ if (isset($_POST['disbursement'])) {
         }
     }
 
-    $buffInsert = [];
-    /* Delete first */
-    $sqlDel =  'DELETE FROM report_budget where report_project_id='.$project_id;
-    $resDel = mysqli_query($conn, $sqlDel);
+
 
 
     // check  required
     $insertValues = '';
     foreach ($budgets as $key => $item) {
+        $keyCheck = array_keys($item);
+        foreach ([ 'item', 'budget_group', 'quantity', 'price'] as $validate) {
+            if(!in_array($validate, $keyCheck, true)) {
+                $_SESSION['error'] = 'please fill all column';
+                header('location: project_manage_edit_disbursement.php?id='.$project_id);exit;
+            }
+        }
+
         $buffReport[$item['budget_group']][] = $item;
     }
+    $buffInsert = [];
+
 
     foreach ($budgets as $index => $item) {
         $insert = "({$project_id},";
@@ -83,6 +90,9 @@ if (isset($_POST['disbursement'])) {
         $insertValues .= $insert.',';
     }
     if(!empty($insertValues)) {
+        /* Delete first */
+        $sqlDel =  'DELETE FROM report_budget where report_project_id='.$project_id;
+        $resDel = mysqli_query($conn, $sqlDel);
 
 
         /*  ---    PROJECT INFO   ----*/
@@ -121,8 +131,6 @@ if (isset($_POST['disbursement'])) {
 
                 }
             }
-
-
         }
         $date = DateThai(date('Y-mp-d'));
         $templateProcessor->setValue('date', $date);
@@ -139,13 +147,14 @@ if (isset($_POST['disbursement'])) {
         $file = preg_replace('/C:\\\\xampp\\\\htdocs/','',$file);
         $file = preg_replace('/\\\\/','/',$file);
         echo("<script>window.open('$file', '_blank');</script>");
-
     }else{
-        $_SESSION['error'] .= 'report budget not update';
+        $_SESSION['error'] .= 'There seems to be no data to update.';
     }
     echo("<script>window.open('project_manage_edit_disbursement.php?id={$project_id}','_self');</script>");
+    exit();
 }
-
+$_SESSION['error'] .= ' not allow from previous page.';
+header('location: project_manage_edit_disbursement.php?id='.$project_id);
 
 
 
