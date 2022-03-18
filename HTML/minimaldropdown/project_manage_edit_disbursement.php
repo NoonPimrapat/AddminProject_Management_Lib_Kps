@@ -241,16 +241,16 @@ WHERE project_info.project_id=$project_id";
                                 <?php endif; ?>
                                     <tr class="box-input act-input">
                                         <td class="text-left">
-                                            <input type="text" name="compensation[item][]">
+                                            <input type="text" class="check-value" name="compensation[item][]">
                                             <span for="" class="item"></span>
                                         </td>
                                         <td>
-                                            <input type="number" class="input-quantity "
+                                            <input type="number" class="input-quantity check-value"
                                                 name="compensation[quantity][]">
                                             <span for="" class="quantity"></span>
                                         </td>
                                         <td>
-                                            <input type="number" class="input-price" name="compensation[price][]">
+                                            <input type="number" class="input-price check-value" name="compensation[price][]">
                                             <span for="" class="price"></span>
                                             <a href="#" data-action="clone" data-target="compensation"><i
                                                     class="fa fa-plus" aria-hidden="true"></i></a>
@@ -305,15 +305,15 @@ WHERE project_info.project_id=$project_id";
                                 <?php endif; ?>
                                     <tr class="box-input act-input">
                                         <td class="text-left">
-                                            <input type="text" name="cost[item][]">
+                                            <input type="text" class="check-value" name="cost[item][]">
                                             <span for="" class="item"></span>
                                         </td>
                                         <td>
-                                            <input type="number" class="input-quantity" name="cost[quantity][]">
+                                            <input type="number" class="input-quantity check-value" name="cost[quantity][]">
                                             <span for="" class="quantity"></span>
                                         </td>
                                         <td>
-                                            <input type="number" class="input-price" name="cost[price][]">
+                                            <input type="number" class="input-price check-value" name="cost[price][]">
                                             <span for="" class="price"></span>
                                             <a href="#" data-action="clone" data-target="cost"><i class="fa fa-plus"
                                                     aria-hidden="true"></i></a>
@@ -368,15 +368,15 @@ WHERE project_info.project_id=$project_id";
                                 <?php endif; ?>
                                     <tr class="box-input act-input">
                                         <td class="text-left">
-                                            <input type="text" name="material[item][]">
+                                            <input type="text" class="check-value" name="material[item][]">
                                             <span for="" class="item"></span>
                                         </td>
                                         <td>
-                                            <input type="number" class="input-quantity" name="material[quantity][]">
+                                            <input type="number" class="input-quantity check-value" name="material[quantity][]">
                                             <span for="" class="quantity"></span>
                                         </td>
                                         <td>
-                                            <input type="number" class="input-price" name="material[price][]">
+                                            <input type="number" class="input-price check-value" name="material[price][]">
                                             <span for="" class="price"></span>
                                             <a href="#" data-action="clone" data-target="material"><i class="fa fa-plus"
                                                     aria-hidden="true"></i></a>
@@ -448,6 +448,13 @@ WHERE project_info.project_id=$project_id";
     $('#sum_total').val(priceTotal);
     $('#bahttex').html('(' + ThaiBaht(priceAll.toFixed(2)) + ')')
     /* ----  ----  */
+
+    $( '.check-value' ).keydown(function() {
+        if($( '.check-value' ).val() !== undefined && $( '.check-value' ).val() !== '') {
+            $(':input[type="submit"]').prop('disabled', true);
+        }
+    });
+
     $(document).on('click', 'a[data-action="clone"]', function(e) {
         e.preventDefault();
         var err = false;
@@ -464,7 +471,7 @@ WHERE project_info.project_id=$project_id";
         $(section).find('.message-box').remove();
 
         // has error = true -- message alert pop
-        if (item.length == 0 || quantity.length == 0 || price.length == 0) {
+        if (item.length === 0 || quantity.length === 0 || price.length === 0) {
             $(section).append(
                 `<div class="message message-box"><div class="error"><h3>Enter is required</h3></div></div>`
             )
@@ -472,6 +479,7 @@ WHERE project_info.project_id=$project_id";
         }
 
         $(tr).find('input').addClass('hiden');
+        $(tr).find('input').removeClass('check-value');
 
         $(tr).find('span.item').text(item);
         $(tr).find('span.quantity').text(quantity);
@@ -498,6 +506,13 @@ WHERE project_info.project_id=$project_id";
         $('#sum-total').html(`${priceTotal}.- บาท`);
         $('#sum_total').val(priceTotal);
         $('#bahttex').html('(' + ThaiBaht(priceAll.toFixed(2)) + ')')
+
+        if($( '.check-value' ).val() !== undefined && $( '.check-value' ).val() !== '' ) {
+            alert($( '.check-value' ).val());
+        }else{
+            $(':input[type="submit"]').prop('disabled', false);
+        }
+
     })
 
     $(document).on('click', 'a[data-action="remove"]', function(e) {
