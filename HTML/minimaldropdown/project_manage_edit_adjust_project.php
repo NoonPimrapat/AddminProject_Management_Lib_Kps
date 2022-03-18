@@ -1,8 +1,9 @@
 <?php
 
 
-    session_start();
+    include('check_login.php');
     include('../config/db.php');
+//    include('../config/db.php');
     $project_id = $_GET['id'];
     $user_id = $_SESSION['user_id'];
     $query = "SELECT * FROM project_info 
@@ -12,15 +13,9 @@ WHERE project_info.project_id=$project_id";
     $result = mysqli_query($conn, $query) or die("Error in sql : $query". mysqli_error($conn));
     $row = mysqli_fetch_array($result);
 
-     $queryde = "SELECT * FROM department_info" or die("Error:" . mysqli_error());
-     $departments = mysqli_query($conn, $queryde);
-
-     $queryStyle = "SELECT * FROM project_style_info ORDER BY project_style_id asc" or die("Error:" . mysqli_error());
-    // เก็บข้อมูลที่ query ออกมาไว้ในตัวแปร result .
-     $styles = mysqli_query($conn, $queryStyle);
-
-     $queryPlan = "SELECT * FROM project_plant WHERE project_id=$project_id";
-     $plans = mysqli_query($conn, $queryPlan);
+    $sqlRevision = "SELECT * FROM project_revision where project_id={$project_id}";
+    $revision = mysqli_query($conn, $sqlRevision) or die("Error in sql : $query". mysqli_error($conn));
+    $revision = iterator_to_array($revision)[0];
 ?>
 
 <!DOCTYPE html>
@@ -139,7 +134,7 @@ WHERE project_info.project_id=$project_id";
 
         </div>
         <div class="grid-item-line">
-            <form action="performance_report_db.php" method="post">
+            <form action="adjust_db.php" method="post">
                 <?php include('errors.php'); ?>
                 <?php if (isset($_SESSION['error'])) : ?>
                 <div class="error">
@@ -153,398 +148,69 @@ WHERE project_info.project_id=$project_id";
                 <?php endif ?>
                 <div class="grid-item">
                     <div class="row">
+                        <h3>
+                            ขออนุมัติปรับแผนปฏิบัติการประจำปี
+                        </h3>
+                    </div>
+                    <div class="row">
+
                         <div class="col-25">
                             <label for="โครงการ" class="topic">โครงการ:</label>
                         </div>
 
                         <div class="col-65">
-                            <select name="project_id" class="inputFill-Information" id="project_id" required>
-                                <option value=""> กรุณาเลือก </option>
-                                <?php foreach ($result_ProjectName as $results) { ?>
-                                <option value="<?php echo $results["project_id"]; ?>">
-                                    <?php echo $results["project_name"]; ?>
-                                </option>
-                                <?php } ?>
-                            </select>
-
+                            <input type="hidden" class="inputFill-Information" name="project_id" value="<?php echo $row['project_id'];?>">
+                            <input type="text" class="inputFill-Information" name="project_name" required
+                                   value="<?php echo $row['project_name'];?>" readonly>
                         </div>
 
                     </div>
+
                     <div class="row">
                         <div class="col-25">
-                            <label for="โครงการ" class="topic">รายงาน ณ ไตรมาส ที่:</label>
+                            <label class="topic" for="project_fiscal_year"> ตามแผนปฏิบัติการประจำปีงบประมาณ
+                                พ.ศ.:</label>
                         </div>
                         <div class="col-65">
-                            <select name="progress_quarter" class="inputFill-Information-small" id="project_name"
-                                required>
-                                <option value=""> กรุณาเลือก </option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
+                            <select name="project_fiscal_year" class="inputFill-Information mt-30" required>
+                                <?php for($i=$row['project_fiscal_year'];$row['project_fiscal_year'] - $i <= 4;$i--): ?>
+                                    <option value="<?php echo $i ?>"><?php echo $i?></option>
+                                <?php   endfor ?>
                             </select>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="ลักษณะโครงการ : " class="topic">ผลการดำเนินงาน : </label>
-                        </div>
-                        <div class="col-65 section-table">
-                            <table class="table" style="margin-top: 25px;">
-                                <thead>
-                                    <tr>
-                                        <th>กิจกรรม</th>
-                                        <th>ระยะเวลาดำเนินการ</th>
-                                        <th>สถานที่</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="box-input checked">
-                                        <td>
-                                            <input type="text" name="plant_detail[]">
-                                            <span class="textplant_detail"></span>
-                                        </td>
-                                        <td>
-                                            <input type="text" name="plant_time[]">
-                                            <span class="textplant_time"></span>
-                                        </td>
-                                        <td>
-                                            <input type="text" name="plant_location[]">
-                                            <span class="textplant_location"></span>
-                                            <a href="#" data-action="clone-plant" data-target="material"><i
-                                                    class="fa fa-plus" aria-hidden="true"></i></a>
-                                            <a href="#" data-action="remove-plant"><i class="fa fa-minus"
-                                                    aria-hidden="true"></i></a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="งบประมาณ " class="topic">ค่าใช้จ่าย : </label>
-                        </div>
-                        <div class="col-65">
 
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-25">
-                            <label for="งบประมาณ " class="topic">1. ค่าตอบแทน : </label>
+                            <label class="topic" for="project_fiscal_year"> ปรับแผนงบประมาณ ครั้งที่ :</label>
                         </div>
-                        <div class="col-65 section-table">
-                            <table class="budget table">
-                                <thead>
-                                    <tr>
-                                        <th>รายการ</th>
-                                        <th>จำนวน</th>
-                                        <th>ราคา</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="box-input act-input">
-                                        <td class="text-left">
-                                            <input type="text" name="compensation[item][]">
-                                            <span for="" class="item"></span>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="input-quantity" name="compensation[quantity][]">
-                                            <span for="" class="quantity"></span>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="input-price" name="compensation[price][]">
-                                            <span for="" class="price"></span>
-                                            <a href="#" data-action="clone" data-target="compensation"><i
-                                                    class="fa fa-plus" aria-hidden="true"></i></a>
-                                            <a href="#" data-action="remove"><i class="fa fa-minus"
-                                                    aria-hidden="true"></i></a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="col-65">
+                            <input type="number" min="1" name="revision_number" value="<?php if(!empty($revision['revision_number'])) echo $revision['revision_number'] ?>" required>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="งบประมาณ" class="topic">2. ค่าใช้สอย : </label>
-                        </div>
-                        <div class="col-65 section-table">
-                            <table class="budget table">
-                                <thead>
-                                    <tr>
-                                        <th>รายการ</th>
-                                        <th>จำนวน</th>
-                                        <th>ราคา</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="box-input act-input">
-                                        <td class="text-left">
-                                            <input type="text" name="cost[item][]">
-                                            <span for="" class="item"></span>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="input-quantity" name="cost[quantity][]">
-                                            <span for="" class="quantity"></span>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="input-price" name="cost[price][]">
-                                            <span for="" class="price"></span>
-                                            <a href="#" data-action="clone" data-target="cost"><i class="fa fa-plus"
-                                                    aria-hidden="true"></i></a>
-                                            <a href="#" data-action="remove"><i class="fa fa-minus"
-                                                    aria-hidden="true"></i></a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="งบประมาณ" class="topic">3. ค่าวัสดุ : </label>
-                        </div>
-                        <div class="col-65 section-table">
-                            <table class="budget table">
-                                <thead>
-                                    <tr>
-                                        <th>รายการ</th>
-                                        <th>จำนวน</th>
-                                        <th>ราคา</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="box-input act-input">
-                                        <td class="text-left">
-                                            <input type="text" name="material[item][]">
-                                            <span for="" class="item"></span>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="input-quantity" name="material[quantity][]">
-                                            <span for="" class="quantity"></span>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="input-price" name="material[price][]">
-                                            <span for="" class="price"></span>
-                                            <a href="#" data-action="clone" data-target="material"><i class="fa fa-plus"
-                                                    aria-hidden="true"></i></a>
-                                            <a href="#" data-action="remove"><i class="fa fa-minus"
-                                                    aria-hidden="true"></i></a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-25">
 
-                        </div>
-                        <div class="col-65 sum-total">
-                            <div for="รวม" class="topic p-right">
-                                รวม : <span class="pull-right" id="sum-total">0.00.- บาท</span>
-                                <div id="bahttex" class="topic p-right text-right">(.......บาทถ้วน)</div>
-                                <input type="hidden" name="project_sum_total" value="0" id="sum_total">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="information-container">
-                        <label-1 for="ลักษณะโครงการ" class="topic">รายงานผลการดำเนินงานตามตัวชี้วัด : </label>
-                    </div>
-                    <div class="row">
-                        <div class="col-25">
-                            <label> </label>
-                        </div>
-                        <div class="col-65">
 
-                        </div>
-                    </div>
-                    <div class="row">
-
-                        <div class="col-65">
-                            <label for="ตัวชี้วัดโครงการ" class="topic">1. </label>
-                            <input type="text" id="indicator_1" name="indicator_1" class="inputFill-Information"
-                                required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-65">
-                            <label for="ลักษณะโครงการ : " class="topic">ค่าเป้าหมาย : </label>
-                            <input type="text" id="indicator_1_value" name="indicator_1_value"
-                                class="inputFill-Information-Datepicker" required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-65">
-                            <label for="ลักษณะโครงการ : " class="topic">ผลการดำเนินงาน : </label>
-                            <input type="text" id="project_name" name="target_value1"
-                                class="inputFill-Information-Datepicker" required>
-                        </div>
-                    </div>
-                    <div class="row">
-
-                        <div class="col-65">
-                            <label for="ลักษณะโครงการ : " class="topic">2. </label>
-                            <input type="text" id="indicator_2" name="indicator_2" class="inputFill-Information"
-                                required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-65">
-                            <label for="ลักษณะโครงการ : " class="topic">ค่าเป้าหมาย : </label>
-                            <input type="text" id="indicator_2_value" name="indicator_2_value"
-                                class="inputFill-Information-Datepicker" required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-65">
-                            <label for="ลักษณะโครงการ : " class="topic">ผลการดำเนินงาน : </label>
-                            <input type="text" id="project_name" name="progress_performance2"
-                                class="inputFill-Information-Datepicker" required>
-                        </div>
-                    </div>
-                    <div class="information-container">
-                        <label-1 for="ลักษณะโครงการ" class="topic">เอกสารแนบ </label>
-                    </div>
-                    <div class="information-container">
-                        <label-1 for="ลักษณะโครงการ" class="topic">1.ภาพกิจกรรม(5-10 ไฟล์) </label>
-                            <input id="file-upload" name="activity_pictures" type="file" accept="image/*" multiple />
-                    </div>
-                    <div class=" information-container">
-                        <label-1 for="ลักษณะโครงการ" class="topic">
-                            2.รายงานผลการประเมินความพึงพอใจ/การนำความรู้ไปใช้ประโยชน์(ถ้ามี)(3-5 ไฟล์) </label>
-                            <input id="file-upload" name="assessment" type="file" accept="file_extension" multiple />
-                    </div>
-                    <div class="information-container">
-                        <label-1 for="ลักษณะโครงการ" class="topic">3.เอกสารการลงทะเบียนเข้าร่วมกิจกรรม(ถ้ามี)(3-5 ไฟล์)
-                            </label>
-                            <input id="file-upload" name="registration" type="file" accept="file_extension" multiple />
-                    </div>
                     <div class="row">
                         <div class="col-25">
                             <label for="ลักษณะโครงการ : " class="topic">ผู้รับผิดชอบโครงการ : </label>
                         </div>
                         <div class="col-65">
                             <input type="text" name="responsible_man"
-                                value="<?php foreach ($result_Username as $results) { ?><?php echo $results["user_firstname"]; ?> &nbsp; <?php echo $results["user_lastname"] ?> <?php } ?>"
+                                   value="<?php echo $row["user_firstname"]; ?> &nbsp; <?php echo $row["user_lastname"] ?>"
                                 class="inputFill-Information" readonly>
                         </div>
                     </div>
                     <div class="container-button">
                         <button type="reset" value="reset" class="backButton" onclick="parent.location='home.php'">Back
                         </button>
-                        <button type="submit" name="performance_report" class="summitButton">Submit</button>
+                        <button type="submit" name="adjust_edit" class="summitButton">Submit</button>
                     </div>
                 </div>
-                <!-- ส่วนแสดงภาพที่อัพโหลดเข้าไป -->
-                <div id='preview'>
-                </div>
 
-                <form id="imageform" method="post" enctype="multipart/form-data" action='ajaxImageUpload.php'
-                    style="clear:both">
 
-                    <div id='imageloadstatus' style='display:none'>
-                        <!-- <img src="loading.gif" alt="Uploading...." /> -->
-                        <div id="container">
-                            <svg viewBox="0 0 100 100">
-                                <defs>
-                                    <filter id="shadow">
-                                        <feDropShadow dx="0" dy="0" stdDeviation="1.5" flood-color="#00766a" />
-                                    </filter>
-                                </defs>
-                                <circle id="spinner"
-                                    style="fill:transparent;stroke:#00766a;stroke-width: 7px;stroke-linecap: round;filter:url(#shadow);"
-                                    cx="50" cy="50" r="45" />
-                            </svg>
-                        </div>
-                    </div>
-                    <div id='imageloadbutton'>
-                        <!-- เลือกได้หลายๆไฟล์ในครั้งเดียว   name="photos[]"  multiple="true"  -->
-                        <br>
-                        เลือกไฟล์ภาพ :
-                        <input type="file" name="photos[]" id="photoimg" multiple="true" />
-                    </div>
-
-                </form>
         </div>
 
     </div>
-
-    </br>
-    <?php mysqli_close($conn); ?>
-    <script src="./bahttex.js"></script>
-    <script>
-    var quantityAll = 0;
-    var priceAll = 0;
-    $(document).on('click', 'a[data-action="clone"]', function(e) {
-        e.preventDefault();
-        var err = false;
-        var section, tr, item, quantity, price;
-        var group = $(this).data('target');
-        section = $(this).closest('.section-table');
-        tr = $(this).closest('.box-input');
-
-        item = $(tr).find('input[name="' + group + '[item][]"]').val();
-        quantity = $(tr).find('input[name="' + group + '[quantity][]"]').val();
-        price = $(tr).find('input[name="' + group + '[price][]"]').val();
-
-        // remove message pop
-        $(section).find('.message-box').remove();
-
-        // has error = true -- message alert pop
-        if (item.length == 0 || quantity.length == 0 || price.length == 0) {
-            $(section).append(
-                `<div class="message message-box"><div class="error"><h3>Enter is required</h3></div></div>`
-            )
-            return;
-        }
-
-        $(tr).find('input').addClass('hiden');
-
-        $(tr).find('span.item').text(item);
-        $(tr).find('span.quantity').text(quantity);
-        $(tr).find('span.price').text(price);
-
-        $(tr).removeClass('act-input');
-
-        var dup = `<tr class="box-input act-input">
-                            <td class="text-left"><input type="text" name="${group}[item][]"><span for="" class="item"></span></td>
-                            <td><input type="number" class="input-quantity" name="${group}[quantity][]"><span for="" class="quantity"></span></td>
-                            <td>
-                                <input type="number" class="input-price" name="${group}[price][]">
-                                <span for="" class="price"></span>
-                                <a href="#" data-action="remove"><i class="fa fa-minus" aria-hidden="true"></i></a>
-                                <a href="#" data-action="clone" data-target="${group}">
-                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                </a>
-                            </td>
-                        </tr>`;
-
-        priceAll += parseFloat(price * quantity);
-        $(section).find('table > tbody').append(dup);
-        var priceTotal = priceAll.toFixed(2);
-        $('#sum-total').html(`${priceTotal}.- บาท`);
-        $('#sum_total').val(priceTotal);
-        $('#bahttex').html('(' + ThaiBaht(priceAll.toFixed(2)) + ')')
-    })
-
-    $(document).on('click', 'a[data-action="remove"]', function(e) {
-        e.preventDefault();
-        // get element tr 
-        var tr = $(this).closest('.box-input');
-        // get price from span
-        var price = $(tr).find('.input-price').val();
-        var quantity = $(tr).find('.input-quantity').val()
-        if (price !== "undefined") {
-            priceAll = parseFloat(priceAll) - parseFloat(price * quantity);
-            priceAll = priceAll < 0 ? 0 : priceAll;
-            $(this).closest('tr').remove();
-            $('#sum-total').html(`${priceAll.toFixed(2)}.- บาท`);
-            $('#bahttex').html('(' + ThaiBaht(priceAll.toFixed(2)) + ')')
-        }
-    })
-    </script>
 </body>
 
 </html>
