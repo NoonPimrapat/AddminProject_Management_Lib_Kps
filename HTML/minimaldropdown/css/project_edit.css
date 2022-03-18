@@ -18,3 +18,33 @@ input.radio-project-edit {
     height: 30px;
     vertical-align: middle;
 }
+
+td.width-75 {
+    width: 75%;
+}
+
+table th td tr{
+    border-color: #ffffff;
+}
+
+table, tr, td ,th{
+    border:none !important;
+    /*border-top: none ;*/
+}
+
+li.block-img {
+    list-style-type: none;
+}
+
+li>img {
+    /*border: 1px solid #D6D6D6;*/
+    width: 30%;
+    height: 200px;
+    float: left;
+    display: inline-block;
+    margin-bottom: 20px;
+    margin-right: 10px;
+}
+div.block-img {
+
+}

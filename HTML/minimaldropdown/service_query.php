@@ -59,3 +59,21 @@ function queryUser($user_id){
     $user = (iterator_to_array($user));
     return $user;
 }
+
+function queryFiles($project_id)
+{
+    include('../config/db.php');
+    $query = "SELECT * FROM project_files WHERE project_id=$project_id";
+    $files = mysqli_query($conn, $query) or die("Error in sql : $query". mysqli_error($conn));
+    $files = (iterator_to_array($files));
+    return $files;
+
+}
+
+function queryImage($file_id) {
+    include('../config/db.php');
+    $query = "SELECT * FROM project_files WHERE file_id=$file_id";
+    $files = mysqli_query($conn, $query) or die("Error in sql : $query". mysqli_error($conn));
+    $files = (iterator_to_array($files));
+    return $files;
+}
