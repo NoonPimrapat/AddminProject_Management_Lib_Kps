@@ -451,6 +451,7 @@ WHERE project_info.project_id=$project_id";
 
     $( '.check-value' ).keydown(function() {
         if($( '.check-value' ).val() !== undefined && $( '.check-value' ).val() !== '') {
+            console.log($(this).val())
             $(':input[type="submit"]').prop('disabled', true);
         }
     });

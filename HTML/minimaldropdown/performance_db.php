@@ -27,9 +27,7 @@ unset($buffInsert['project_sum_total']);
 $budgets = getBudgetFormat($_POST);
 
 
-/* Delete first */
-$sqlDel = 'DELETE FROM report_budget where report_project_id=' . $project_id;
-$resDel = mysqli_query($conn, $sqlDel);
+
 
 
 // check  required
@@ -58,6 +56,10 @@ foreach ($budgets as $index => $item) {
     $insertValues .= $insert . ',';
 }
 if (!empty($insertValues)) {
+    /* Delete first */
+    $sqlDel = 'DELETE FROM report_budget where report_project_id=' . $project_id;
+    $resDel = mysqli_query($conn, $sqlDel);
+
     $insertValues = substr($insertValues, 0, -1);
     $sqlInsert = "INSERT INTO report_budget(report_project_id,report_item,report_budget_group,report_quantity,report_price) VALUES {$insertValues};";
 //        var_export($sqlInsert);exit;
