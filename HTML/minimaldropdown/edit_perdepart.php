@@ -125,7 +125,7 @@
                     class="material-icons">person_add</span>เพิ่มแผนกบุคลากร</a></caption>
         <thead>
             <tr class="prodetail">
-                <th>id</th>
+
                 <th>แผนกบุคลากร</th>
                 <th>แก้ไข</th>
                 <th>ลบ</th>
@@ -145,7 +145,7 @@
         ?>
             <?php foreach ($result as $row) { ?>
             <tr class="prodetail">
-                <td> <?php echo $row['perdepartment_id']; ?></td>
+
                 <td> <?php echo $row['perdepartment_name']; ?></td>
 
                 <td>

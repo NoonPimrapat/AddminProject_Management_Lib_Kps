@@ -23,6 +23,7 @@
     <title> Minimal Dropdown Menu</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/eidit_check.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -120,7 +121,7 @@
                     class="material-icons">person_add</span>เพิ่มฝ่ายงาน</a></caption>
         <thead>
             <tr class="prodetail">
-                <th>id</th>
+
                 <th>ฝ่ายงาน</th>
                 <th>แก้ไข</th>
                 <th>ลบ</th>
@@ -132,7 +133,7 @@
 
             <?php foreach ($result as $row) { ?>
             <tr class="prodetail">
-                <td> <?php echo $row['department_id']; ?></td>
+
                 <td> <?php echo $row['department_name']; ?></td>
 
                 <td><a href="update_depart.php?id=<?php echo $row['department_id']; ?>"><span

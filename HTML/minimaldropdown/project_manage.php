@@ -158,7 +158,7 @@ $result_Project = mysqli_query($conn, $queryProject);
             <?php } ?>
         </table>
         <div class="container-button">
-            <button onclick="parent.location='home.php'" class="backButton">Back </button>
+            <button onclick="parent.location='operation_result.php'" class="backButton">Back </button>
             <?php
             unset($_SESSION['project_id']);
             ?>

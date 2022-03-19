@@ -124,7 +124,7 @@
                     class="material-icons">person_add</span>เพิ่มตำแหน่งบุคลากร</a></caption>
         <thead>
             <tr class="prodetail">
-                <th>id</th>
+
                 <th>ตำแหน่งบุคลากร</th>
                 <th>แก้ไข</th>
                 <th>ลบ</th>
@@ -143,7 +143,7 @@
         ?>
             <?php foreach ($result as $row) { ?>
             <tr class="prodetail">
-                <td> <?php echo $row['perposition_id']; ?></td>
+
                 <td> <?php echo $row['perposition_name']; ?></td>
 
                 <td>
