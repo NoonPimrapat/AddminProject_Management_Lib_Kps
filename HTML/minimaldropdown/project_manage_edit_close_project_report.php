@@ -9,7 +9,7 @@ $user_id = $_SESSION['user_id'];
 
 
 //1. query ข้อมูลจากตาราง user_details:
-$queryproject = "SELECT * FROM project_info WHERE project_id = '28'" or die("Error:" . mysqli_error());
+$queryproject = "SELECT * FROM project_info WHERE project_id = $project_id" or die("Error:" . mysqli_error());
 //เก็บข้อมูลที่ query ออกมาไว้ในตัวแปร result .
 $result_project = mysqli_query($conn, $queryproject);
 
@@ -188,7 +188,8 @@ $file = preg_replace('/\\\\/','/',$file);
         </div>
 
         <div class="container-button center mt-30">
-            <button onclick="parent.location='project_manage_edit_close_project.php?id=<?php echo $project_id ?>'" class="backButton">Back </button>
+            <button onclick="parent.location='project_manage_edit_close_project.php?id=<?php echo $project_id ?>'"
+                class="backButton">Back </button>
             <button onclick="Download();" class="summitButton btn-success">Download</button>
             <?php
             unset($_SESSION['project_id']);
@@ -199,7 +200,7 @@ $file = preg_replace('/\\\\/','/',$file);
 
 </html>
 <script>
-    function Download() {
-        window.open('<?php echo $file?>', '_self');
-    };
+function Download() {
+    window.open('<?php echo $file?>', '_self');
+};
 </script>

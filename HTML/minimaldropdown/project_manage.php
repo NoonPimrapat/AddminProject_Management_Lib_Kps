@@ -129,7 +129,8 @@ $result_Project = mysqli_query($conn, $queryProject);
                     <th>ลักษณะโครงการ</th>
                     <th>สถานะโครงการ</th>
                     <th>เอกสารโครงการ</th>
-                    <th>สถานะเอกสาร</th>
+                    <th>แก้ไข</th>
+                    <th>ยืนยันการตรวจสอบ</th>
                 </tr>
                 <?php
         $search=isset($_GET['search']) ? $_GET['search']:'';
@@ -146,7 +147,10 @@ $result_Project = mysqli_query($conn, $queryProject);
                     <td><a href="project_manage_edit.php?id=<?php echo $value['project_id']; ?>">
                             <?php echo $value['status_project']; ?></a>
                     </td>
-                    <td> <?php   if ($value['document_status']==0) {echo'<p style="color: #a94442;">รอตรวจสอบ</p>';}else
+                    <td><a href="project_manage_edit.php?id=<?php echo $value['project_id']; ?>">
+                            <span class="material-icons">edit</span></a>
+                    </td>
+                    <td> <?php   if ($value['document_status']==0) {echo'<p style="color: #a94442;">ตรวจสอบ</p>';}else
                     {echo'<p style="color: #00766a;">ตรวจสอบแล้ว</p>';}?></td>
                 </tr>
             </tbody>

@@ -1,6 +1,4 @@
 <?php
-
-
     include('check_login.php');
     include('../config/db.php');
 //    include('../config/db.php');
@@ -159,9 +157,10 @@ WHERE project_info.project_id=$project_id";
                         </div>
 
                         <div class="col-65">
-                            <input type="hidden" class="inputFill-Information" name="project_id" value="<?php echo $row['project_id'];?>">
+                            <input type="hidden" class="inputFill-Information" name="project_id"
+                                value="<?php echo $row['project_id'];?>">
                             <input type="text" class="inputFill-Information" name="project_name" required
-                                   value="<?php echo $row['project_name'];?>" readonly>
+                                value="<?php echo $row['project_name'];?>" readonly>
                         </div>
 
                     </div>
@@ -174,7 +173,7 @@ WHERE project_info.project_id=$project_id";
                         <div class="col-65">
                             <select name="project_fiscal_year" class="inputFill-Information mt-30" required>
                                 <?php for($i=$row['project_fiscal_year'];$row['project_fiscal_year'] - $i <= 4;$i--): ?>
-                                    <option value="<?php echo $i ?>"><?php echo $i?></option>
+                                <option value="<?php echo $i ?>"><?php echo $i?></option>
                                 <?php   endfor ?>
                             </select>
                         </div>
@@ -185,7 +184,9 @@ WHERE project_info.project_id=$project_id";
                             <label class="topic" for="project_fiscal_year"> ปรับแผนงบประมาณ ครั้งที่ :</label>
                         </div>
                         <div class="col-65">
-                            <input type="number" min="1" name="revision_number" value="<?php if(!empty($revision['revision_number'])) echo $revision['revision_number'] ?>" required>
+                            <input type="number" min="1" name="revision_number"
+                                value="<?php if(!empty($revision['revision_number'])) echo $revision['revision_number'] ?>"
+                                required>
                         </div>
                     </div>
 
@@ -196,7 +197,7 @@ WHERE project_info.project_id=$project_id";
                         </div>
                         <div class="col-65">
                             <input type="text" name="responsible_man"
-                                   value="<?php echo $row["user_firstname"]; ?> &nbsp; <?php echo $row["user_lastname"] ?>"
+                                value="<?php echo $row["user_firstname"]; ?> &nbsp; <?php echo $row["user_lastname"] ?>"
                                 class="inputFill-Information" readonly>
                         </div>
                     </div>
