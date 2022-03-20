@@ -14,7 +14,7 @@ $user_id = $_SESSION['user_id'];
 
 
 //1. query ข้อมูลจากตาราง user_details:
-$queryproject = "SELECT * FROM project_info WHERE project_id = '28'" or die("Error:" . mysqli_error($conn));
+$queryproject = "SELECT * FROM project_info WHERE project_id = $project_id" or die("Error:" . mysqli_error($conn));
 //เก็บข้อมูลที่ query ออกมาไว้ในตัวแปร result .
 $result_project = mysqli_query($conn, $queryproject);
 $project = iterator_to_array($result_project);
@@ -87,7 +87,7 @@ $file = preg_replace('/\\\\/','/',$file);
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="css/project_edit.css">
     <!-- custom css -->
 
@@ -101,97 +101,100 @@ $file = preg_replace('/\\\\/','/',$file);
 </head>
 
 <body>
-<header>
+    <header>
 
 
-</header>
-<div class="report-container">
-    <h1 class="center mt-30">ตัวอย่างไฟล์ Document</h1>
+    </header>
+    <div class="report-container">
+        <h1 class="center mt-30">ตัวอย่างไฟล์ Document</h1>
 
-    <div class="row">
-        <div class="col-md-6 left">ปรับแผนงบประมาณ ครั้งที่  <?php echo $revision_number?>  /<?php echo $year?></div>
-        <div class="col-md-6 right">ปรับแผนงบประมาณ ครั้งที่  <?php echo $revision_number?>  /<?php echo $year?></div>
-    </div>
-    <h3 class="center mt-60">ขออนุมัติปรับแผนปฏิบัติการประจำปี สำนักหอสมุด กำแพงแสน</h3>
-
-    <div class="inline">
-        <p>ส่วนงาน <u class="border-bottom"><?php echo $deptname_user?>ส่วนงาน   สำนักหอสมุด กำแพงแสน โทร 0-3435-1884  ภายใน 3802			</u></p>
-
-    </div>
-    <div class="inline">
-        <p> ที่<u class="border-bottom">&emsp; อว
-                ๖๕๐๑.๐๘/&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u>
-        </p>
-        <div class="right">
-            <p>วันที่<u
-                    class="border-bottom">&emsp;<?php echo $strDate?>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u>
-            </p>
+        <div class="row">
+            <div class="col-md-6 left">ปรับแผนงบประมาณ ครั้งที่ <?php echo $revision_number?> /<?php echo $year?></div>
+            <div class="col-md-6 right">ปรับแผนงบประมาณ ครั้งที่ <?php echo $revision_number?> /<?php echo $year?></div>
         </div>
-    </div>
-    <div class="inline">
-        <p>เรื่อง<u class="border-bottom"> ขออนุมัติปรับแผนปฎิบัติการประจำปีงบประมาณ พ.ศ.
-                <?php echo $year?>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;  </u>
+        <h3 class="center mt-60">ขออนุมัติปรับแผนปฏิบัติการประจำปี สำนักหอสมุด กำแพงแสน</h3>
+
+        <div class="inline">
+            <p>ส่วนงาน <u class="border-bottom"><?php echo $deptname_user?>ส่วนงาน สำนักหอสมุด กำแพงแสน โทร 0-3435-1884
+                    ภายใน 3802 </u></p>
+
+        </div>
+        <div class="inline">
+            <p> ที่<u class="border-bottom">&emsp; อว
+                    ๖๕๐๑.๐๘/&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u>
+            </p>
+            <div class="right">
+                <p>วันที่<u
+                        class="border-bottom">&emsp;<?php echo $strDate?>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u>
+                </p>
+            </div>
+        </div>
+        <div class="inline">
+            <p>เรื่อง<u class="border-bottom"> ขออนุมัติปรับแผนปฎิบัติการประจำปีงบประมาณ พ.ศ.
+                    <?php echo $year?>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                </u>
+            </p>
+
+        </div>
+
+        <p>
+            เรียน<strong> </strong> <u>ผู้อำนวยการสำนักหอสมุด กำแพงแสน</u>
+            <br />
+        <div class="indent">
+            <u>
+                ข้าพเจ้า <?php echo $name?> ฝ่าย <?php echo $deptname_user?>
+                ผู้รับผิดชอบโครงการ <?php echo $project_name?> ขออนุญาตปรับรายละเอียดโครงการดังนี้
+            </u>
+        </div>
+        <div class="indent">
+            <u>
+                จากที่กำหนดไว้คือ&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            </u>
+        </div>
+        <div class="indent">
+            <u>
+                ขอเปลี่ยนเป็น&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                &emsp;&emsp;&emsp;&emsp;&emsp;
+            </u>
+        </div>
+        <div class="indent">
+            <u>
+                โดยมีเหตุผลในการขอปรับดังนี้&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            </u>
+        </div>
         </p>
 
-    </div>
+        <u> จึงเรียนมาเพื่อโปรดพิจารณาอนุมัติ</u>
+        <div class="right">
+            <u>
+                ลงชื่อ.........................
+                <br />
+                (<?php echo $name ?>)
+                <br />
+                ผู้รับผิดชอบโครงการ
+            </u>
+        </div>
 
-    <p>
-        เรียน<strong> </strong> <u>ผู้อำนวยการสำนักหอสมุด กำแพงแสน</u>
-        <br />
-    <div class="indent">
-        <u>
-            ข้าพเจ้า <?php echo $name?>  ฝ่าย <?php echo $deptname_user?>
-            ผู้รับผิดชอบโครงการ	<?php echo $project_name?>			ขออนุญาตปรับรายละเอียดโครงการดังนี้
-        </u>
-    </div>
-    <div class="indent">
-        <u>
-            จากที่กำหนดไว้คือ&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-        </u>
-    </div>
-    <div class="indent">
-        <u>
-            ขอเปลี่ยนเป็น&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-            &emsp;&emsp;&emsp;&emsp;&emsp;
-        </u>
-    </div>
-    <div class="indent">
-        <u>
-            โดยมีเหตุผลในการขอปรับดังนี้&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;    &emsp;
-            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-        </u>
-    </div>
-    </p>
-
-    <u> จึงเรียนมาเพื่อโปรดพิจารณาอนุมัติ</u>
-    <div class="right">
-        <u>
-            ลงชื่อ.........................
-            <br />
-            (<?php echo $name ?>)
-            <br />
-            ผู้รับผิดชอบโครงการ
-        </u>
-    </div>
-
-    <div class="container-button center mt-30">
-        <button onclick="parent.location='project_manage_edit_adjust_project.php?id=<?php echo $project_id ?>'" class="backButton">Back </button>
-        <button onclick="Download();" class="summitButton btn-success">Download</button>
-        <?php
+        <div class="container-button center mt-30">
+            <button onclick="parent.location='project_manage_edit_adjust_project.php?id=<?php echo $project_id ?>'"
+                class="backButton">Back </button>
+            <button onclick="Download();" class="summitButton btn-success">Download</button>
+            <?php
         unset($_SESSION['project_id']);
         ?>
+        </div>
     </div>
-</div>
 </body>
 
 </html>
 <script>
-    function Download() {
-        window.open('<?php echo $file?>', '_self');
-    };
+function Download() {
+    window.open('<?php echo $file?>', '_self');
+};
 </script>
