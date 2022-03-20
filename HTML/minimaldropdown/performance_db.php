@@ -54,7 +54,6 @@ foreach ($budgets as $index => $item) {
         }
     }
     $insertValues .= $insert . ',';
-    var_export($insertValues);exit;
 }
 if (!empty($insertValues)) {
     /* Delete first */
