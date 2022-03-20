@@ -315,7 +315,7 @@ $fileDoc = preg_replace('/\\\\/','/',$fileDoc);
                                 </td>
                             </tr>
                         <?php endforeach; ?>
-                        <?php if(array_key_last($budgets) === $group) : ?>
+                        <?php if(end($budgets) === $budget) : ?>
                             <tr>
                                 <td colspan="2" style="text-align: right;">
                                     รวม

@@ -47,13 +47,14 @@ foreach ($budgets as $index => $item) {
         } else {
             $buffInsert[$key] = (string)'"' . $buffInsert[$key] . '"';
         }
-        if (array_key_last($item) === $key) {
+        if (end($item) === $value) {
             $insert .= "{$buffInsert[$key]})";
         } else {
             $insert .= "{$buffInsert[$key]},";
         }
     }
     $insertValues .= $insert . ',';
+    var_export($insertValues);exit;
 }
 if (!empty($insertValues)) {
     /* Delete first */
@@ -117,7 +118,7 @@ if(!empty($plants)) {
             }
             $buffInsert[$key] = (string)'"' . $buffInsert[$key] . '"';
 
-            if (array_key_last($item) === $key) {
+            if (end($item) === $value) {
                 $insert .= "{$buffInsert[$key]})";
             } else {
                 $insert .= "{$buffInsert[$key]},";

@@ -108,7 +108,7 @@ foreach ($budgets as $index => $item) {
         } else {
             $buffInsert[$key] = (string)'"' . $buffInsert[$key] . '"';
         }
-        if (array_key_last($item) === $key) {
+        if (end($item) === $value) {
             $insert .= "{$buffInsert[$key]},'$date')";
         } else {
             $insert .= "{$buffInsert[$key]},";

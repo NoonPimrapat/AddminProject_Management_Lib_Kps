@@ -32,13 +32,6 @@ if (isset($_POST['Update_Project'])) {
 
         $update .= "{$key} = '{$buff_update[$key]}',";
 
-//        if($key === array_key_last($buff_update)) {
-//            // check last item
-//            $update .= "{$key} = '{$buff_update[$key]}'";
-//        }else{
-//            $update .= "{$key} = '{$buff_update[$key]}', ";
-//        }
-
     }
     $update = substr($update,0, -1);
     $keys_update = array_keys($buff_update);
