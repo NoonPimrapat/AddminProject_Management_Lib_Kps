@@ -49,47 +49,47 @@ if (isset($_POST['disbursement'])) {
     }
 
 
-
-
-    // check  required
     $insertValues = '';
-    foreach ($budgets as $key => $item) {
-        $keyCheck = array_keys($item);
-        foreach ([ 'item', 'budget_group', 'quantity', 'price'] as $validate) {
-            if(!in_array($validate, $keyCheck, true)) {
-                $_SESSION['error'] = 'please fill all column';
-                header('location: project_manage_edit_disbursement.php?id='.$project_id);exit;
+    if(!empty($budgets)) {
+        // check  required
+        foreach ($budgets as $key => $item) {
+            $keyCheck = array_keys($item);
+            foreach ([ 'item', 'budget_group', 'quantity', 'price'] as $validate) {
+                if(!in_array($validate, $keyCheck, true)) {
+                    $_SESSION['error'] = 'please fill all column';
+                    header('location: project_manage_edit_disbursement.php?id='.$project_id);exit;
+                }
             }
+
+            $buffReport[$item['budget_group']][] = $item;
         }
 
-        $buffReport[$item['budget_group']][] = $item;
+        /* prepare data insert */
+        foreach ($budgets as $index => $item) {
+            $insert = "({$project_id},";
+            foreach ($item as $key => $value) {
+                $buffInsert[$key] = mysqli_real_escape_string($conn, trim($value));
+                if (empty($buffInsert[$key])) {
+                    $_SESSION['error'] = "something went wrong";
+                }
+                if($key === 'report_quantity') {
+                    $buffInsert[$key] = (int) $buffInsert[$key];
+                }else if($key === 'report_price') {
+                    $buffInsert[$key] = (float) $buffInsert[$key];
+                }else{
+                    $buffInsert[$key] = (string) '"'.$buffInsert[$key].'"';
+                }
+                if(end($item) === $value) {
+                    $insert .= "{$buffInsert[$key]})";
+                }else{
+                    $insert .= "{$buffInsert[$key]},";
+                }
+            }
+            $insertValues .= $insert.',';
+        }
     }
     $buffInsert = [];
-
-
-    foreach ($budgets as $index => $item) {
-        $insert = "({$project_id},";
-        foreach ($item as $key => $value) {
-            $buffInsert[$key] = mysqli_real_escape_string($conn, trim($value));
-            if (empty($buffInsert[$key])) {
-                $_SESSION['error'] = "something went wrong";
-            }
-            if($key === 'report_quantity') {
-                $buffInsert[$key] = (int) $buffInsert[$key];
-            }else if($key === 'report_price') {
-                $buffInsert[$key] = (float) $buffInsert[$key];
-            }else{
-                $buffInsert[$key] = (string) '"'.$buffInsert[$key].'"';
-            }
-            if(end($item) === $value) {
-                $insert .= "{$buffInsert[$key]})";
-            }else{
-                $insert .= "{$buffInsert[$key]},";
-            }
-        }
-        $insertValues .= $insert.',';
-    }
-    if(!empty($insertValues)) {
+    if(!empty($insertValues)) {echo 1234;exit();
         /* Delete first */
         $sqlDel =  'DELETE FROM report_budget where report_project_id='.$project_id;
         $resDel = mysqli_query($conn, $sqlDel);
@@ -148,7 +148,7 @@ if (isset($_POST['disbursement'])) {
         $file = preg_replace('/\\\\/','/',$file);
         echo("<script>window.open('$file', '_blank');</script>");
     }else{
-        $_SESSION['error'] .= 'There seems to be no data to update.';
+        $_SESSION['error'] = 'There seems to be no data to update.';
     }
     echo("<script>window.open('project_manage_edit_disbursement.php?id={$project_id}','_self');</script>");
     exit();
