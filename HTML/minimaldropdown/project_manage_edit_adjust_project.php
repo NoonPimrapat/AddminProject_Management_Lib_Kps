@@ -13,7 +13,9 @@ WHERE project_info.project_id=$project_id";
 
     $sqlRevision = "SELECT * FROM project_revision where project_id={$project_id}";
     $revision = mysqli_query($conn, $sqlRevision) or die("Error in sql : $query". mysqli_error($conn));
-    $revision = iterator_to_array($revision)[0];
+    if(!empty($revision) && $revision->num_rows > 0) {
+        $revision = iterator_to_array($revision)[0];
+    }
 ?>
 
 <!DOCTYPE html>
