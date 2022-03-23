@@ -30,7 +30,7 @@
                 $_SESSION['user_id']=$row["user_id"];
                 if ($row["user_status"]==2) {
                 $_SESSION['success']='Your are now loggen in';
-                header("location: index.php");
+                header("location: sum_plan.php");
                 }else{
                 array_push($errors, "Wrong Username or Password");
                 $_SESSION['error'] = "Wrong Username or Password!";

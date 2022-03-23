@@ -68,17 +68,16 @@ $result_Project = mysqli_query($conn, $queryProject);
                 <div class="navbar_right">
                     <div class="profile">
                         <div class="icon_wrap">
-                            <img src="../img/kueng.jpg" alt="profile_pic">
-                            <span
-                                class="name"><?php if(!empty($_SESSION['user_email'])) echo $_SESSION['user_email'];?></span>
+                            <img src="<?php echo $row['user_pic']; ?>" alt="profile_pic">
+                            <span class="name"><?php echo $row['user_firstname']; ?></span>
                             <i class="fas fa-chevron-down"></i>
                         </div>
 
                         <div class="profile_dd">
                             <ul class="profile_ul">
                                 <!-- logged in user information เช็คว่ามีการล็อคอินเข้ามาไหม -->
-                                <?php if (isset($_SESSION['email'])) :?>
-                                <?php endif?>
+                                <?php if (isset($_SESSION['email'])) : ?>
+                                <?php endif ?>
                                 <li class="profile_li"><a class="profile" href="profile.php"><span class="picon"><i
                                                 class="fas fa-user-alt"></i>
                                         </span>Profile</a>

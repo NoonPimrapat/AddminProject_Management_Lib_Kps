@@ -1,10 +1,4 @@
 <?php
-/**
- *  Created by PhpStorm.
- *  User: Rock Melody
- *  on 3/6/2022.
- *  on 2:56 PM.
- */
 
 session_start();
 include('../config/db.php');

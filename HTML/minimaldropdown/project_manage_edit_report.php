@@ -1,10 +1,4 @@
 <?php
-/**
- *  Created by PhpStorm.
- *  User: Rock Melody
- *  on 3/6/2022.
- *  on 9:15 PM.
- */
 
 session_start();
 include('../config/db.php');
@@ -277,7 +271,8 @@ div.inline {
     </div>
     <br />
     <div class="container-button center">
-        <button onclick="parent.location='project_manage_edit.php?id=<?php echo $project_id?>'" class="backButton btn btn-warning">กลับ
+        <button onclick="parent.location='project_manage_edit.php?id=<?php echo $project_id?>'"
+            class="backButton btn btn-warning">กลับ
         </button>
         <button onclick="Download();" class="download-doc btn btn-success">ดาวน์โหลด </button>
         <?php

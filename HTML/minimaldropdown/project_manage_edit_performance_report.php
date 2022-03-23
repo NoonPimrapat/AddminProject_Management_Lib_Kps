@@ -1,7 +1,5 @@
 <?php
 
-
-
 include('check_login.php');
 include('../config/db.php');
 include('service.php');
@@ -230,13 +228,13 @@ $fileDoc = preg_replace('/\\\\/','/',$fileDoc);
 
         <div class="mt-20">
             <?php if (empty($plans->num_rows) > 0): ?>
-                <table class="table mt-15">
-                    <thead>
-                        <th>
-                            ผลการดำเนินงาน
-                        </th>
-                    </thead>
-                    <tbody>
+            <table class="table mt-15">
+                <thead>
+                    <th>
+                        ผลการดำเนินงาน
+                    </th>
+                </thead>
+                <tbody>
                     <?php foreach($plans as $key => $value) : ?>
 
                     <tr class="box-input">
@@ -245,101 +243,101 @@ $fileDoc = preg_replace('/\\\\/','/',$fileDoc);
                         </td>
                     </tr>
                     <?php endforeach; ?>
-                    </tbody>
-                </table>
+                </tbody>
+            </table>
 
-                <table class="table mt-15">
-                    <thead>
+            <table class="table mt-15">
+                <thead>
                     <th>
                         ระยะเวลาดำเนินงาน
                     </th>
-                    </thead>
-                    <tbody>
+                </thead>
+                <tbody>
                     <?php foreach($plans as $key => $value) : ?>
-                        <tr class="box-input">
-                            <td>
-                                <span><?php echo '&nbsp;&nbsp;&nbsp;'.($key+1) .'. '. $value['report_time']?></span>
-                            </td>
-                        </tr>
+                    <tr class="box-input">
+                        <td>
+                            <span><?php echo '&nbsp;&nbsp;&nbsp;'.($key+1) .'. '. $value['report_time']?></span>
+                        </td>
+                    </tr>
                     <?php endforeach; ?>
-                    </tbody>
-                </table>
+                </tbody>
+            </table>
 
-                <table class="table mt-15">
-                    <thead>
+            <table class="table mt-15">
+                <thead>
                     <th>
                         สถานที่
                     </th>
-                    </thead>
-                    <tbody>
+                </thead>
+                <tbody>
                     <?php foreach($plans as $key => $value) : ?>
-                        <tr class="box-input">
-                            <td>
-                                <span><?php echo '&nbsp;&nbsp;&nbsp;'.($key+1) .'. '. $value['report_place']?></span>
-                            </td>
-                        </tr>
+                    <tr class="box-input">
+                        <td>
+                            <span><?php echo '&nbsp;&nbsp;&nbsp;'.($key+1) .'. '. $value['report_place']?></span>
+                        </td>
+                    </tr>
                     <?php endforeach; ?>
-                    </tbody>
-                </table>
+                </tbody>
+            </table>
             <?php endif; ?>
         </div>
 
         <div class="mt-20">
             <p> งบประมาณ</p>
             <?php if (empty($budgets->num_rows) > 0): ?>
-                <?php $noPlant = (array_flip(array_keys($budgets))); // run number of array ?>
-                <?php foreach($budgets as $group => $budget) :?>
-                    <table class="table mt-15">
-                        <thead>
-                            <th>
-                                <?php if($group === 'compensation') : echo ($noPlant[$group]+1)?>
-                                    . ค่าตอบแทน
-                                <?php elseif($group === 'cost') : echo ($noPlant[$group]+1)?>
-                                    . ค่าใช้สอย
-                                <?php elseif($group === 'material') : echo ($noPlant[$group]+1)?>
-                                    . ค่าวัสดุ
-                                <?php endif; ?>
-                            </th>
-                        </thead>
-                        <tbody>
-                        <?php foreach($budget as $key => $value) : ?>
-                            <tr class="box-input">
-                                <td class="width-75">
-                                    <span><?php echo '&nbsp;&nbsp;&nbsp;'.($noPlant[$group]+1).'.'.($key+1).' '.$value['report_item']?></span>
-                                </td>
-                                <td class="" colspan="2" style="text-align: right;">
-                                    <?php echo number_format($value['report_quantity'] * $value['report_price']) ?>
-                                </td>
-                                <td style="text-align: right;">
-                                    บาท
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                        <?php if(end($budgets) === $budget) : ?>
-                            <tr>
-                                <td colspan="2" style="text-align: right;">
-                                    รวม
-                                </td>
-                                <td style="text-align: right;">
-                                    <?php echo number_format($row['project_sum_total'])?>
-                                </td>
-                                <td style="text-align: right;">
-                                    บาท
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="3" style="text-align: right;">
-                                    <?php echo $total_thai ?>
-                                </td>
-                                <td style="text-align: right;">
-                                    บาท
-                                </td>
-                            </tr>
+            <?php $noPlant = (array_flip(array_keys($budgets))); // run number of array ?>
+            <?php foreach($budgets as $group => $budget) :?>
+            <table class="table mt-15">
+                <thead>
+                    <th>
+                        <?php if($group === 'compensation') : echo ($noPlant[$group]+1)?>
+                        . ค่าตอบแทน
+                        <?php elseif($group === 'cost') : echo ($noPlant[$group]+1)?>
+                        . ค่าใช้สอย
+                        <?php elseif($group === 'material') : echo ($noPlant[$group]+1)?>
+                        . ค่าวัสดุ
                         <?php endif; ?>
-                        </tbody>
-                    </table>
-                    <?php ?>
-                <?php endforeach; ?>
+                    </th>
+                </thead>
+                <tbody>
+                    <?php foreach($budget as $key => $value) : ?>
+                    <tr class="box-input">
+                        <td class="width-75">
+                            <span><?php echo '&nbsp;&nbsp;&nbsp;'.($noPlant[$group]+1).'.'.($key+1).' '.$value['report_item']?></span>
+                        </td>
+                        <td class="" colspan="2" style="text-align: right;">
+                            <?php echo number_format($value['report_quantity'] * $value['report_price']) ?>
+                        </td>
+                        <td style="text-align: right;">
+                            บาท
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                    <?php if(end($budgets) === $budget) : ?>
+                    <tr>
+                        <td colspan="2" style="text-align: right;">
+                            รวม
+                        </td>
+                        <td style="text-align: right;">
+                            <?php echo number_format($row['project_sum_total'])?>
+                        </td>
+                        <td style="text-align: right;">
+                            บาท
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="text-align: right;">
+                            <?php echo $total_thai ?>
+                        </td>
+                        <td style="text-align: right;">
+                            บาท
+                        </td>
+                    </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+            <?php ?>
+            <?php endforeach; ?>
 
             <?php endif; ?>
         </div>
@@ -377,17 +375,19 @@ $fileDoc = preg_replace('/\\\\/','/',$fileDoc);
         <div class="col-md-12 mb-20 mb-20">
             <ul class="center">
                 <?php foreach ($files as $file):?>
-                    <li class="col-md-12 block-img">
-                        <?php if($file['type'] === 'image'): ?>
-                            <img src="view_image.php?file_id=<?php echo $file['file_id']?>" alt="<?php echo $files[0]['name']?>">
-                        <?php endif; ?>
-                    </li>
+                <li class="col-md-12 block-img">
+                    <?php if($file['type'] === 'image'): ?>
+                    <img src="view_image.php?file_id=<?php echo $file['file_id']?>"
+                        alt="<?php echo $files[0]['name']?>">
+                    <?php endif; ?>
+                </li>
                 <?php endforeach; ?>
             </ul>
         </div>
 
         <div class="container-button mt-30 center mb-60">
-            <button onclick="parent.location='project_manage_edit_performance.php?id=<?php echo $project_id ?>'" class="backButton">Back </button>
+            <button onclick="parent.location='project_manage_edit_performance.php?id=<?php echo $project_id ?>'"
+                class="backButton">Back </button>
             <button onclick="Download();" class="backButton btn-success">Download </button>
             <?php unset($_SESSION['project_id']); ?>
 
@@ -395,8 +395,9 @@ $fileDoc = preg_replace('/\\\\/','/',$fileDoc);
     </div>
 </body>
 <script>
-    function Download() {
-        window.open('<?php echo $fileDoc?>', '_self');
-    }
+function Download() {
+    window.open('<?php echo $fileDoc?>', '_self');
+}
 </script>
+
 </html>

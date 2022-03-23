@@ -1,12 +1,4 @@
 <?php
-/**
- *  Created by PhpStorm.
- *  User: Rock Melody
- *  on 3/18/2022.
- *  on 4:46 PM.
- */
-
-
 include('check_login.php');
 include('../config/db.php');
 include('service.php');
@@ -43,4 +35,3 @@ if(isset($_POST['adjust_edit'])) {
         header('location: project_manage_edit_adjust_project.php?id='.$project_id);
     }
 }
-

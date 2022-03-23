@@ -18,7 +18,9 @@ $result_style = mysqli_query($conn, $query2);
 $queryProject = "SELECT * FROM project_info " or die("Error:" . mysqli_error());
 //เก็บข้อมูลที่ query ออกมาไว้ในตัวแปร result .
 $result_Project = mysqli_query($conn, $queryProject);
-       
+$query = "SELECT * FROM user_details WHERE user_id='$user_id'";
+$result = mysqli_query($conn, $query) or die("Error in sql : $query" . mysqli_error($conn));
+$row = mysqli_fetch_array($result);
 ?>
 <!DOCTYPE html>
 <html>
@@ -72,16 +74,16 @@ $result_Project = mysqli_query($conn, $queryProject);
                 <div class="navbar_right">
                     <div class="profile">
                         <div class="icon_wrap">
-                            <img src="../img/kueng.jpg" alt="profile_pic">
-                            <span class="name"><?php echo $_SESSION['user_email'];?></span>
+                            <img src="<?php echo $row['user_pic']; ?>" alt="profile_pic">
+                            <span class="name"><?php echo $row['user_firstname']; ?></span>
                             <i class="fas fa-chevron-down"></i>
                         </div>
 
                         <div class="profile_dd">
                             <ul class="profile_ul">
                                 <!-- logged in user information เช็คว่ามีการล็อคอินเข้ามาไหม -->
-                                <?php if (isset($_SESSION['email'])) :?>
-                                <?php endif?>
+                                <?php if (isset($_SESSION['email'])) : ?>
+                                <?php endif ?>
                                 <li class="profile_li"><a class="profile" href="profile.php"><span class="picon"><i
                                                 class="fas fa-user-alt"></i>
                                         </span>Profile</a>
@@ -117,7 +119,7 @@ $result_Project = mysqli_query($conn, $queryProject);
     <p>&nbsp&nbsp<span class="material-icons">assignment</span>จัดการโครงการ/<span
             class="material-icons">upload_file</span>แสดงหรือดาวน์โหลดเอกสารโครงการ</p>
     <form method="get" id="form" enctype="multipart/form-data" action="">
-        <strong>ค้นหาข้อมูล<span class="material-icons">person_search</span></strong>
+        <strong>ค้นหาชื่อโครงการ<span class="material-icons">person_search</span></strong>
         <input type="text" name="search" size="20" value="">
         <input type="submit" value=" ค้นหา ">
     </form></br>
@@ -132,14 +134,15 @@ $result_Project = mysqli_query($conn, $queryProject);
                     <th>แก้ไข</th>
                     <th>ยืนยันการตรวจสอบ</th>
                 </tr>
+            </thead>
+            <tbody>
                 <?php
         $search=isset($_GET['search']) ? $_GET['search']:'';
 
-        $sql= "SELECT * FROM `user_details` WHERE user_firstname  LIKE '%$search%'";
-        $result = mysqli_query($conn,$sql);
+        $sql= "SELECT * FROM project_info WHERE project_name  LIKE '%$search%'";
+        $result_Project = mysqli_query($conn,$sql);
         ?>
                 <?php foreach ($result_Project as $value) { ?>
-            <tbody>
                 <tr>
                     <td><?php echo $value['project_name']; ?></td>
                     <td><?php echo $value['project_style']; ?></td>
@@ -150,12 +153,11 @@ $result_Project = mysqli_query($conn, $queryProject);
                     <td><a href="project_manage_edit.php?id=<?php echo $value['project_id']; ?>">
                             <span class="material-icons">edit</span></a>
                     </td>
-                    <td> <?php   if ($value['document_status']==0) {echo'<p style="color: #a94442;">ตรวจสอบ</p>';}else
-                    {echo'<p style="color: #00766a;">ตรวจสอบแล้ว</p>';}?></td>
+                    <td> <?php   if ($value['document_status']==0) {echo'<button style="color: #a94442;"><o style="color: #fff;" id="verify">ยืนยัน</o></button>';}else
+                    {echo'<button style="color: #a94442;"><o style="color: #00766a;">ยืนยันแล้ว</o></button>';}?></td>
                 </tr>
+                <?php } ?>
             </tbody>
-            </thead>
-            <?php } ?>
         </table>
         <div class="container-button">
             <button onclick="parent.location='operation_result.php'" class="backButton">Back </button>
@@ -165,6 +167,22 @@ $result_Project = mysqli_query($conn, $queryProject);
         </div>
     </div>
     <?php mysqli_close($conn); ?>
+    <script>
+    // ยืนยันสถานะ
+    $('#verify').click(function() {
+        $.ajax({
+            url: '.php',
+            method: "post",
+            data: {
+
+            }
+            success: function(data) {
+
+            }
+        })
+
+    })
+    </script>
 </body>
 
 </html>

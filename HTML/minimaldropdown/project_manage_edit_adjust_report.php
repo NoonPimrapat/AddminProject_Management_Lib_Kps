@@ -1,10 +1,4 @@
 <?php
-/**
- *  Created by PhpStorm.
- *  User: Rock Melody
- *  on 3/18/2022.
- *  on 5:24 PM.
- */
 
 include('check_login.php');
 include('../config/db.php');

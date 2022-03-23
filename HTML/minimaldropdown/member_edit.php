@@ -95,24 +95,21 @@ if (isset($_GET['logout'])) {
                 <div class="navbar_right">
                     <div class="profile">
                         <div class="icon_wrap">
-                            <img src="../img/kueng.jpg" alt="profile_pic">
-                            <span class="name"><?php echo $_SESSION['user_email'];?></span>
+                            <img src="<?php echo $row['user_pic']; ?>" alt="profile_pic">
+                            <span class="name"><?php echo $row['user_firstname']; ?></span>
                             <i class="fas fa-chevron-down"></i>
                         </div>
 
                         <div class="profile_dd">
                             <ul class="profile_ul">
                                 <!-- logged in user information เช็คว่ามีการล็อคอินเข้ามาไหม -->
-                                <?php if (isset($_SESSION['email'])) :?>
-                                <?php endif?>
+                                <?php if (isset($_SESSION['email'])) : ?>
+                                <?php endif ?>
                                 <li class="profile_li"><a class="profile" href="profile.php"><span class="picon"><i
                                                 class="fas fa-user-alt"></i>
                                         </span>Profile</a>
                                     <div class="btn">My Account</div>
                                 </li>
-                                <li><a class="address" href="#"><span class="picon"><i
-                                                class="fas fa-map-marker"></i></span>Address</a></li>
-
                                 <li><a class="logout" href="home.php?logout='1'"><span class="picon"><i
                                                 class="fas fa-sign-out-alt"></i></span>Logout</a></li>
                             </ul>
@@ -345,8 +342,9 @@ if (isset($_GET['logout'])) {
                 </div>
             </div>
             <div class="container-button">
-                <button type="reset" value="reset" class="backButton" onclick="parent.location='edituser.php'">Back </button>
-                <button type="submit" name="Update_User" class="summitButton" >Submit</button>
+                <button type="reset" value="reset" class="backButton" onclick="parent.location='edituser.php'">Back
+                </button>
+                <button type="submit" name="Update_User" class="summitButton">Submit</button>
             </div>
         </div>
     </form>

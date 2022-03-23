@@ -1,14 +1,4 @@
 <?php
-/**
- *  Created by PhpStorm.
- *  User: Rock Melody
- *  on 3/15/2022.
- *  on 10:18 AM.
- */
-
-
-
-
 
 function queryBudgets($project_id) {
     include('../config/db.php');

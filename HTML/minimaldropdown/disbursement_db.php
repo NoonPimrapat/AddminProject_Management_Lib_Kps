@@ -89,7 +89,7 @@ if (isset($_POST['disbursement'])) {
         }
     }
     $buffInsert = [];
-    if(!empty($insertValues)) {echo 1234;exit();
+    if(!empty($insertValues)) {
         /* Delete first */
         $sqlDel =  'DELETE FROM report_budget where report_project_id='.$project_id;
         $resDel = mysqli_query($conn, $sqlDel);
@@ -146,7 +146,18 @@ if (isset($_POST['disbursement'])) {
         //$file = ('/file_word/'.$fileName.'.docx');
         $file = preg_replace('/C:\\\\xampp\\\\htdocs/','',$file);
         $file = preg_replace('/\\\\/','/',$file);
-        echo("<script>window.open('$file', '_blank');</script>");
+        // var_export($file);exit;
+        echo"
+            <script type=\"text/javascript\">
+            alert('Script on');
+//                window.open('$file', '_blank');
+                let win = window.open('$file', '_blank');
+                if(win) {
+                       alert('work');
+                }else{
+                     alert('Not work');
+                }
+            </script>";
     }else{
         $_SESSION['error'] = 'There seems to be no data to update.';
     }
@@ -155,7 +166,3 @@ if (isset($_POST['disbursement'])) {
 }
 $_SESSION['error'] .= ' not allow from previous page.';
 header('location: project_manage_edit_disbursement.php?id='.$project_id);
-
-
-
-

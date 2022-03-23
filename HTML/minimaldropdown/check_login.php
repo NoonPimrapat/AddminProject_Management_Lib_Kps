@@ -1,12 +1,4 @@
 <?php
-/**
- *  Created by PhpStorm.
- *  User: Rock Melody
- *  on 3/17/2022.
- *  on 4:30 PM.
- */
-
-
 session_start();
 // ถ้าไม่loginก็จะเข้าหน้านี้ไม่ได้
 if (!isset($_SESSION['user_email'])) {

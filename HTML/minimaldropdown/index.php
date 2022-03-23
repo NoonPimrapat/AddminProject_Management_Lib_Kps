@@ -22,6 +22,10 @@ if (isset($_GET['logout'])) {
         $query2 = "SELECT * FROM perdepartment_info ORDER BY perdepartment_id asc" or die("Error:" . mysqli_error());
         //3.เก็บข้อมูลที่ query ออกมาไว้ในตัวแปร result .
         $result2 = mysqli_query($conn, $query2);
+        $user_id = $_SESSION['user_id'];
+        $query = "SELECT * FROM user_details WHERE user_id='$user_id'";
+        $result = mysqli_query($conn, $query) or die("Error in sql : $query" . mysqli_error($conn));
+        $row = mysqli_fetch_array($result);
 ?>
 <!DOCTYPE html>
 <html>
@@ -76,23 +80,22 @@ if (isset($_GET['logout'])) {
                 <div class="navbar_right">
                     <div class="profile">
                         <div class="icon_wrap">
-                            <img src="../img/kueng.jpg" alt="profile_pic">
-                            <span class="name"><?php echo $_SESSION['user_email'];?></span>
+                            <img src="<?php echo $row['user_pic']; ?>" alt="profile_pic">
+                            <span class="name"><?php echo $row['user_firstname']; ?></span>
                             <i class="fas fa-chevron-down"></i>
                         </div>
 
                         <div class="profile_dd">
                             <ul class="profile_ul">
                                 <!-- logged in user information เช็คว่ามีการล็อคอินเข้ามาไหม -->
-                                <?php if (isset($_SESSION['email'])) :?>
-                                <?php endif?>
+                                <?php if (isset($_SESSION['email'])) : ?>
+                                <?php endif ?>
                                 <li class="profile_li"><a class="profile" href="profile.php"><span class="picon"><i
                                                 class="fas fa-user-alt"></i>
                                         </span>Profile</a>
                                     <div class="btn">My Account</div>
                                 </li>
-
-                                <li><a class="logout" href="login.php?logout='1'"><span class="picon"><i
+                                <li><a class="logout" href="home.php?logout='1'"><span class="picon"><i
                                                 class="fas fa-sign-out-alt"></i></span>Logout</a></li>
                             </ul>
                         </div>

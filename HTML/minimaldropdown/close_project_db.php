@@ -1,11 +1,4 @@
 <?php
-/**
- *  Created by PhpStorm.
- *  User: Rock Melody
- *  on 3/17/2022.
- *  on 06:46 AM.
- */
-
 
 include('check_login.php');
 include('../config/db.php');
@@ -149,8 +142,3 @@ if(empty($_SESSION['error'])) {
 }else{
     header('location: project_manage_edit_close_project.php?id='.$project_id);
 }
-
-
-
-
-

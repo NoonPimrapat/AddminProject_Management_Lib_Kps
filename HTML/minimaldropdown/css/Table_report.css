@@ -1,0 +1,101 @@
+.label_title {
+    width: 300px;
+    height: 50px;
+    border-radius: 64px;
+    background: #000;
+    border: 2px solid #000;
+    box-sizing: border-box;
+    align-items: center;
+    place-items: center;
+    font-style: normal;
+    font-size: 25px;
+    font-weight: normal;
+    color: #000;
+    margin-left: 5%;
+}
+
+Button {
+    font-size: 15px;
+    font-weight: normal;
+    color: #ffffff;
+    background: #00766a;
+    border-radius: 10px;
+    border: 1px solid #000;
+    height: 25px;
+    width: fit-content;
+    box-sizing: border-box;
+    padding: 0px 10px;
+}
+
+.styleButton {
+    font-size: 15px;
+    font-weight: normal;
+    color: #ffffff;
+    background: #00766a;
+    border-radius: 10px;
+    border: 1px solid #000;
+    height: 25px;
+    width: fit-content;
+    box-sizing: border-box;
+    cursor: pointer;
+    padding: 0px 10px;
+}
+
+table {
+    align-items: center;
+    position: relative;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2%;
+}
+
+table {
+    border: 1px solid;
+}
+
+tfoot {
+    background-color: #C4C4C4;
+    color: #000;
+    font-size: 20px;
+    font-weight: normal;
+    height: 50px;
+    font-family: 'Prompt', sans-serif;
+}
+
+th {
+    background-color: #E5E5E5;
+    color: #000;
+    font-size: 20px;
+    font-weight: normal;
+    height: 50px;
+    font-family: 'Prompt', sans-serif;
+}
+
+p {
+    font-size: 15px;
+    display: inline-block;
+    font-family: 'Prompt', sans-serif;
+}
+
+.note {
+    margin-left: 15%;
+    align-items: left;
+    text-align: left;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.green {
+    color: #00766a;
+    display: inline;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.red {
+    color: #a94442;
+    display: inline-block;
+    font-size: 15px;
+    font-weight: bold;
+}
